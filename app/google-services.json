@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "115002722229",
+    "firebase_url": "https://moviles-deb8f.firebaseio.com",
+    "project_id": "moviles-deb8f",
+    "storage_bucket": "moviles-deb8f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:115002722229:android:cb89bd6758d55d1c",
+        "android_client_info": {
+          "package_name": "com.example.brian.bicicletasusuario"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "115002722229-sfnmsdipvoc6v9qhdjseg7d28vbb49h5.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "115002722229-sfnmsdipvoc6v9qhdjseg7d28vbb49h5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCDNF09eEbKkCU99lpVknnVpXuSsW6oVHs"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
