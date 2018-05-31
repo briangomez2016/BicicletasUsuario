@@ -41,11 +41,12 @@ public class RegistroUsuario extends AppCompatActivity {
     RadioButton pasaporte;
     @BindView(R.id.documento)
     EditText documento;
-
-
+    @BindView(R.id.direccion)
+    EditText direccion;
+    @BindView(R.id.numero)
+    EditText numero;
     @BindView(R.id.group)
     RadioGroup radio;
-
 
     public void Registrarse(View v) {
         final ApiInterface api = ApiCliente.getClient().create(ApiInterface.class);
@@ -54,15 +55,16 @@ public class RegistroUsuario extends AppCompatActivity {
         String telefono = tel.getText().toString();
         String password = pass.getText().toString();
         String idMovil = FirebaseInstanceId.getInstance().getToken();
+        String dir  = direccion.getText().toString();
+        String num = numero.getText().toString();
         if (ci.isChecked()) {
             String cedula = documento.getText().toString();
-            Call<RespuestaRegistrar> call = api.savePost(cedula, "", nom, em, password, telefono, "lavalleja 1782");
+            Call<RespuestaRegistrar> call = api.savePost(cedula,"", nom, em, password, telefono, dir,num,idMovil);
             call.enqueue(new Callback<RespuestaRegistrar>() {
                 @Override
                 public void onResponse(Call<RespuestaRegistrar> call, Response<RespuestaRegistrar> response) {
                     Toast.makeText(RegistroUsuario.this, "Bien", Toast.LENGTH_SHORT).show();
                 }
-
                 @Override
                 public void onFailure(Call<RespuestaRegistrar> call, Throwable t) {
                     Toast.makeText(RegistroUsuario.this, t.getMessage().toString(), Toast.LENGTH_SHORT).show();
@@ -80,7 +82,6 @@ public class RegistroUsuario extends AppCompatActivity {
                 public void onResponse(Call<RespuestaRegistrar> call, Response<RespuestaRegistrar> response) {
                     Toast.makeText(RegistroUsuario.this, "Bien", Toast.LENGTH_SHORT).show();
                 }
-
                 @Override
                 public void onFailure(Call<RespuestaRegistrar> call, Throwable t) {
                     Toast.makeText(RegistroUsuario.this, t.getMessage().toString(), Toast.LENGTH_SHORT).show();
