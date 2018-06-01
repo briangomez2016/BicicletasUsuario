@@ -59,7 +59,7 @@ public class RegistroUsuario extends AppCompatActivity {
         String num = numero.getText().toString();
         if (ci.isChecked()) {
             String cedula = documento.getText().toString();
-            Call<RespuestaRegistrar> call = api.savePost(cedula,"", nom, em, password, telefono, dir,num,idMovil);
+            Call<RespuestaRegistrar> call = api.savePost(cedula,"", nom, em, password, telefono, dir);
             call.enqueue(new Callback<RespuestaRegistrar>() {
                 @Override
                 public void onResponse(Call<RespuestaRegistrar> call, Response<RespuestaRegistrar> response) {

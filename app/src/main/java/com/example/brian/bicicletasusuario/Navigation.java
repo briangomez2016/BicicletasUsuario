@@ -1,10 +1,8 @@
 package com.example.brian.bicicletasusuario;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.view.View;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -47,7 +45,7 @@ public class Navigation extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.navigation, menu);
+        // getMenuInflater().inflate(R.menu.navigation, menu);
         return true;
     }
 
@@ -58,11 +56,6 @@ public class Navigation extends AppCompatActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -72,18 +65,24 @@ public class Navigation extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        boolean fragmentTransaction = false;
+        Fragment fragment = null;
 
-        } else if (id == R.id.nav_slideshow) {
+        switch (id) {
+            case R.id.pes_perfil:
+                break;
+            case R.id.pes_vermapa:
+                fragment = new VerMapa();
+                fragmentTransaction = true;
+                break;
+		}
 
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+        if(fragmentTransaction){
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.contenido_navigation,fragment)
+                    .commit();
+            item.setChecked(true);
+            getSupportActionBar().setTitle(item.getTitle());
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
