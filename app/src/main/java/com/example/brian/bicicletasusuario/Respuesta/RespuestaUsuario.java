@@ -1,4 +1,4 @@
-package com.example.brian.bicicletasusuario;
+package com.example.brian.bicicletasusuario.Respuesta;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName;
  * Created by Brian on 28/05/2018.
  */
 
-public class RespuestaRegistrar {
+public class RespuestaUsuario {
     @SerializedName("codigo")
     private String codigo;
 
@@ -14,13 +14,15 @@ public class RespuestaRegistrar {
         return codigo;
     }
     public void setCodigo(String codigo) {
+
         this.codigo = codigo;
     }
 
     @SerializedName("mensaje")
     private String mensaje;
 
-    public String getMensaje() {
+    public String getMensaje()
+    {
         return mensaje;
     }
 
