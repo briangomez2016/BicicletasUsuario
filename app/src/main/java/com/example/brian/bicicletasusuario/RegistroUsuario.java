@@ -1,18 +1,27 @@
 package com.example.brian.bicicletasusuario;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 
+import android.text.Editable;
+import android.text.InputFilter;
+import android.text.InputType;
+import android.text.TextWatcher;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.brian.bicicletasusuario.ApiCliente.ApiCliente;
-import com.example.brian.bicicletasusuario.Respuesta.RespuestaUsuario;
 import com.example.brian.bicicletasusuario.ApiInterface.ApiInterface;
+import com.example.brian.bicicletasusuario.ApiInterface.RespuestaUsuario;
 import com.google.firebase.iid.FirebaseInstanceId;
 
 import butterknife.BindView;
@@ -32,6 +41,8 @@ public class RegistroUsuario extends AppCompatActivity {
     EditText tel;
     @BindView(R.id.pass)
     EditText pass;
+    @BindView(R.id.passConfir)
+    EditText passConfir;
     @BindView(R.id.ci)
     RadioButton ci;
     @BindView(R.id.pasaporte)
@@ -45,56 +56,110 @@ public class RegistroUsuario extends AppCompatActivity {
 
     public void Registrarse(View v) {
         final ApiInterface api = ApiCliente.getClient().create(ApiInterface.class);
-        String nom = nombre.getText().toString();
-        String em = email.getText().toString();
-        String telefono = tel.getText().toString();
-        String password = pass.getText().toString();
-        String idMovil = FirebaseInstanceId.getInstance().getToken();
-        String dir  = direccion.getText().toString();
-        if (ci.isChecked()) {
-            String cedula = documento.getText().toString();
-            Call<RespuestaUsuario> call = api.registrar(cedula,"",nom,em,password,telefono,dir);
-            call.enqueue(new Callback<RespuestaUsuario>() {
-                @Override
-                public void onResponse(Call<RespuestaUsuario> call, Response<RespuestaUsuario> response) {
-                    Toast.makeText(RegistroUsuario.this, "Bien", Toast.LENGTH_SHORT).show();
-                }
-                @Override
-                public void onFailure(Call<RespuestaUsuario> call, Throwable t) {
-                    Toast.makeText(RegistroUsuario.this, t.getMessage().toString(), Toast.LENGTH_SHORT).show();
-                }
-            });
-            nombre.setText("");
-            email.setText("");
-            tel.setText("");
-            documento.setText("");
-        } else {
-            String pasaporte = documento.getText().toString();
-            Call<RespuestaUsuario> call = api.registrar("", pasaporte, nom, em, password, telefono, "lavalleja 1782");
-            call.enqueue(new Callback<RespuestaUsuario>() {
-                @Override
-                public void onResponse(Call<RespuestaUsuario> call, Response<RespuestaUsuario> response) {
-                    Toast.makeText(RegistroUsuario.this, "Bien", Toast.LENGTH_SHORT).show();
-                }
-                @Override
-                public void onFailure(Call<RespuestaUsuario> call, Throwable t) {
-                    Toast.makeText(RegistroUsuario.this, t.getMessage().toString(), Toast.LENGTH_SHORT).show();
-                }
-            });
-            nombre.setText("");
-            email.setText("");
-            tel.setText("");
-            documento.setText("");
+        final String nom = nombre.getText().toString();
+        final String em = email.getText().toString();
+        final String telefono = tel.getText().toString();
+        final String password = pass.getText().toString();
+        final String idMovil = FirebaseInstanceId.getInstance().getToken();
+        final String dir = direccion.getText().toString();
+        final String cedula = documento.getText().toString();
+        final String pasaporte = documento.getText().toString();
+        final String passconf = passConfir.getText().toString();
 
+        if(password.equals(passconf)){
+        Call<RespuestaUsuario> call = api.getPerfil(em);
+        call.enqueue(new Callback<RespuestaUsuario>() {
+            @Override
+            public void onResponse(Call<RespuestaUsuario> call, Response<RespuestaUsuario> response) {
+                if (response.body().getUsuario().getEmail()!=null) {
+                    email.setError("Email ya en uso");
+                } else {
+                    if (ci.isChecked()) {
+                        Call<RespuestaUsuario> call2 = api.registrar(cedula, null, nom, em, password, telefono, dir);
+                        call2.enqueue(new Callback<RespuestaUsuario>() {
+                            @Override
+                            public void onResponse(Call<RespuestaUsuario> call2, Response<RespuestaUsuario> response) {
+                                Intent intent = new Intent(RegistroUsuario.this, Navigation.class);
+                                startActivity(intent);
+
+                            }
+
+                            @Override
+                            public void onFailure(Call<RespuestaUsuario> call2, Throwable t) {
+
+                            }
+                        });
+                    } else {
+                        Call<RespuestaUsuario> call2 = api.registrar(null, pasaporte, nom, em, password, telefono, dir);
+                        call2.enqueue(new Callback<RespuestaUsuario>() {
+                            @Override
+                            public void onResponse(Call<RespuestaUsuario> call2, Response<RespuestaUsuario> response) {
+                                Intent intent = new Intent(RegistroUsuario.this, Navigation.class);
+                                startActivity(intent);
+                            }
+
+                            @Override
+                            public void onFailure(Call<RespuestaUsuario> call2, Throwable t) {
+
+                            }
+                        });
+                    }
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<RespuestaUsuario> call, Throwable t) {
+
+            }
+        });
         }
-    }
 
+
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.registro);
         ButterKnife.bind(this);
+        radio.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
 
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                if (checkedId == R.id.ci) {
+                    documento.setText("");
+                    int maxLength = 8;
+                    documento.setInputType(InputType.TYPE_CLASS_NUMBER);
+                    documento.setHint("Cedula");
+                    documento.setFilters(new InputFilter[]{new InputFilter.LengthFilter(maxLength)});
+                } else if (checkedId == R.id.pasaporte) {
+                    documento.setText("");
+                    documento.setInputType(InputType.TYPE_CLASS_TEXT);
+                    documento.setHint("Pasaporte");
+                }
+            }
+
+        });
+        passConfir.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.length() != 0) {
+                    if (pass.getText().toString().equals(passConfir.getText().toString())) {
+                        passConfir.setError(null);
+                    } else {
+                        passConfir.setError("Contraseña Incorrecta");
+                    }
+                }
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
     }
 }
+

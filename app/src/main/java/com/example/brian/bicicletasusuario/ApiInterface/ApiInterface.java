@@ -1,12 +1,11 @@
 package com.example.brian.bicicletasusuario.ApiInterface;
 
-import com.example.brian.bicicletasusuario.Respuesta.RespuestaUsuario;
-
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Query;
 
 /**
  * Created by Brian on 25/05/2018.
@@ -28,10 +27,14 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST("login")
     Call<RespuestaUsuario> iniciar(@Field("email") String email,
-                                    @Field("password") String pass
+                                    @Field("password") String pass,
+                                   @Field("uid") String idMovil
     );
 
     @GET("paradas")
     Call<RespuestaParadas> getParadas();
+
+    @GET("perfil")
+    Call<RespuestaUsuario> getPerfil(@Query("email") String email);
 
 }

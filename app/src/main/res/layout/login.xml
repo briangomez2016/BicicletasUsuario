@@ -71,7 +71,9 @@
         android:text="@string/iniciar_sesion"
         android:textColor="#fff"
         android:layout_marginHorizontal="20dp"
-        android:background="@drawable/boton_iniciar_sesion" />
+        android:background="@drawable/boton_iniciar_sesion"
+        android:onClick="IniciarSesion"
+        />
 
 
     <LinearLayout

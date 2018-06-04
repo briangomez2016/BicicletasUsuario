@@ -58,9 +58,10 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="100dp"
             android:ems="10"
+            android:inputType="textPassword"
             android:gravity="center"
             android:hint="@string/confir"
-            android:inputType="textPersonName"
+
             android:textColorHint="#fff"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.502"
@@ -68,6 +69,7 @@
             app:layout_constraintTop_toTopOf="parent"
             android:backgroundTint="#ffd70d"
             />
+
 
 
         <EditText
@@ -86,8 +88,6 @@
             app:layout_constraintTop_toTopOf="parent"
             android:backgroundTint="#ffd70d"/>
 
-
-
         <EditText
             android:id="@+id/telefono"
             android:layout_width="217dp"
@@ -97,6 +97,7 @@
             android:hint="@string/telefono"
             android:gravity="center"
             android:textColorHint="#fff"
+            android:inputType="phone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -109,6 +110,7 @@
             android:layout_height="37dp"
             android:layout_marginTop="235dp"
             android:gravity="center"
+            android:onClick="onRadioButtonClicked"
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -141,30 +143,27 @@
             android:layout_marginTop="275dp"
             android:ems="10"
             android:hint="@string/cedula"
+            android:inputType="number"
+            android:textColorHint="#fff"
+            android:maxLength="8"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:backgroundTint="#ffd70d"/>
+        <EditText
+            android:id="@+id/direccion"
+            android:layout_width="wrap_content"
+            android:layout_height="42dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="325dp"
+            android:ems="10"
+            android:hint="@string/direccion"
             android:inputType="textPersonName"
             android:textColorHint="#fff"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:backgroundTint="#ffd70d"/>
-
-            <EditText
-                android:id="@+id/direccion"
-                android:layout_width="150dp"
-                android:layout_height="39dp"
-                android:ems="10"
-                android:layout_marginTop="325dp"
-                android:hint="@string/direccion"
-                android:textColorHint="#fff"
-                android:backgroundTint="#ffd70d"
-                app:layout_constraintHorizontal_bias="0.502"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-
-
-
-
 
 </android.support.constraint.ConstraintLayout>
     <Button
