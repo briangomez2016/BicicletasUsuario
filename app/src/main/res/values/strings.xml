@@ -34,4 +34,5 @@
         <item>100</item>
         <item>500</item>
     </string-array>
+    <string name="title_activity_qr">QR</string>
 </resources>

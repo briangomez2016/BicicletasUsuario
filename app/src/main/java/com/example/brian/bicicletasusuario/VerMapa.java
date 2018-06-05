@@ -1,9 +1,11 @@
 package com.example.brian.bicicletasusuario;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -12,13 +14,17 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.brian.bicicletasusuario.ApiCliente.ApiCliente;
@@ -45,7 +51,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class VerMapa extends Fragment implements OnMapReadyCallback {
+public class VerMapa extends Fragment implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
 	private GoogleMap map = null;
 
@@ -53,6 +59,22 @@ public class VerMapa extends Fragment implements OnMapReadyCallback {
 
 	@BindView(R.id.cbMostrarVacias)
 	CheckBox cbMostrarVacias;
+	@BindView (R.id.llOpciones)
+	LinearLayout llOpciones;
+	@BindView (R.id.btnCerrarOpciones)
+	Button btnCerrarOpciones;
+	@BindView (R.id.btnCerrarDevolver)
+	Button btnCerrarDevolver;
+	@BindView (R.id.llPanelDevolver)
+	LinearLayout llPanelDevolver;
+	@BindView (R.id.btnPanelAlquilar)
+	Button btnPanelAluilar;
+	@BindView (R.id.btnPanelDevolver)
+	Button btnPanelDevolver;
+	@BindView (R.id.btnQRDevolver)
+	Button btnQRDevolver;
+	@BindView (R.id.etQRDevolver)
+	EditText etQRDevolver;
 
 	private List<Marker> paradas;
 
@@ -88,12 +110,78 @@ public class VerMapa extends Fragment implements OnMapReadyCallback {
 			}
 		});
 
+		btnCerrarOpciones.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				llOpciones.setVisibility(View.GONE);
+			}
+		});
+
+		btnPanelAluilar.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				llOpciones.setVisibility(View.GONE);
+				Toast.makeText(VerMapa.this.getActivity(), "ABRIR PANEL ALQUILAR AQUI", Toast.LENGTH_SHORT).show();
+			}
+		});
+
+		btnPanelDevolver.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				llOpciones.setVisibility(View.GONE);
+				llPanelDevolver.setVisibility(View.VISIBLE);
+			}
+		});
+
+		btnCerrarDevolver.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				llPanelDevolver.setVisibility(View.GONE);
+			}
+		});
+
+		btnQRDevolver.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				escanearQR (0);
+			}
+		});
+		
 		return v;
+	}
+
+	private void escanearQR (int unoAlquilarCeroDevolver) {
+		try {
+			Intent intent = new Intent("com.google.zxing.client.android.SCAN");
+			intent.putExtra("SCAN_MODE", "QR_CODE_MODE"); // "PRODUCT_MODE for bar codes
+			startActivityForResult(intent, unoAlquilarCeroDevolver);
+		} catch (Exception e) {
+			Uri marketUri = Uri.parse("market://details?id=com.google.zxing.client.android");
+			Intent marketIntent = new Intent(Intent.ACTION_VIEW,marketUri);
+			startActivity(marketIntent);
+		}
+	}
+
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		if (requestCode == 0) {
+
+			if (resultCode == AppCompatActivity.RESULT_OK) {
+				String contents = data.getStringExtra ("SCAN_RESULT");
+				etQRDevolver.setText (contents);
+			}
+			if(resultCode == AppCompatActivity.RESULT_CANCELED){
+				Toast.makeText(this.getActivity (), "No se pudo escanear el codigo", Toast.LENGTH_SHORT).show();
+			}
+		}
 	}
 
 	@Override
 	public void onMapReady(final GoogleMap googleMap) {
 		map = googleMap;
+		map.setOnMarkerClickListener (this);
 
 		LatLng paysandu = new LatLng(-32.316465, -58.088980);
 		googleMap.moveCamera(CameraUpdateFactory.newLatLng(paysandu));
@@ -145,7 +233,7 @@ public class VerMapa extends Fragment implements OnMapReadyCallback {
 
 						MarkerOptions marker = new MarkerOptions ()
 								.position (new LatLng (p.getLatitud (), p.getLongitud ()))
-								.title (p.getNombre ())
+								.title (p.getId () + " | " + p.getNombre ())
 								.draggable(false)
 								.snippet (p.getDireccion ())
 								.icon (BitmapDescriptorFactory.defaultMarker (
@@ -153,8 +241,9 @@ public class VerMapa extends Fragment implements OnMapReadyCallback {
 												BitmapDescriptorFactory.HUE_RED
 												: BitmapDescriptorFactory.HUE_GREEN
 								));
+						Marker m = map.addMarker (marker);
 
-						paradas.add (map.addMarker (marker));
+						paradas.add (m);
 					}
 				}
 			}
@@ -165,5 +254,12 @@ public class VerMapa extends Fragment implements OnMapReadyCallback {
 				Toast.makeText(VerMapa.this.getContext(), "No se pudieron cargar las paradas", Toast.LENGTH_SHORT).show();
 			}
 		});
+	}
+
+	@Override
+	public boolean onMarkerClick(Marker marker) {
+		if (llOpciones.getVisibility () == View.GONE)
+			llOpciones.setVisibility (View.VISIBLE);
+		return false;
 	}
 }
