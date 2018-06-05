@@ -65,8 +65,29 @@ public class RegistroUsuario extends AppCompatActivity {
         final String cedula = documento.getText().toString();
         final String pasaporte = documento.getText().toString();
         final String passconf = passConfir.getText().toString();
+        if(nom.isEmpty()){
+            nombre.setError("Se debe ingresar un nombre");
+        }
+        if(em.isEmpty()){
+            email.setError("Se debe ingresar un email");
+        }
+        if(telefono.isEmpty()){
+            tel.setError("Se debe ingresar un nombre");
+        }
+        if(password.isEmpty()){
+            pass.setError("Se debe ingresar un contraseña");
+        }
+        if(passconf.isEmpty()){
+            passConfir.setError("Se debe confirmar la contraseña");
+        }
+        if(dir.isEmpty()){
+            direccion.setError("Se debe confirmar la contraseña");
+        }
+        if(cedula.isEmpty() || pasaporte.isEmpty()){
+            documento.setError("Se debe ingresar algo");
+        }
 
-        if(password.equals(passconf)){
+        if(password.equals(passconf) && !nom.isEmpty() && !em.isEmpty() && !dir.isEmpty() && !telefono.isEmpty() && !password.isEmpty() && !cedula.isEmpty() ){
         Call<RespuestaUsuario> call = api.getPerfil(em);
         call.enqueue(new Callback<RespuestaUsuario>() {
             @Override
