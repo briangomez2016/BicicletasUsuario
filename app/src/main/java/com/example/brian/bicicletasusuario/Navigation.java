@@ -71,6 +71,8 @@ public class Navigation extends AppCompatActivity
 
         switch (id) {
             case R.id.pes_perfil:
+                fragment = new Perfil();
+                fragmentTransaction = true;
                 break;
             case R.id.pes_vermapa:
                 fragment = new VerMapa();
