@@ -4,28 +4,24 @@
     tools:showIn="navigation_view">
 
     <group
-        android:checkableBehavior="single"
-        android:id="@+id/group1">
+        android:id="@+id/group1"
+        android:checkableBehavior="single">
         <item
-            android:id="@+id/pes_perfil"
-            android:icon="@drawable/ic_perfil"
-            android:title="Perfil" />
+            android:id="@+id/pes_alquiactual"
+            android:icon="@drawable/ic_alquiler_actual"
+            android:title="Alquiler actual" />
+        <item
+            android:id="@+id/pes_historial"
+            android:icon="@drawable/ic_historial"
+            android:title="Histórico de alquileres " />
         <item
             android:id="@+id/pes_vermapa"
             android:icon="@drawable/ic_ver_mapa"
             android:title="Ver mapa" />
         <item
-            android:id="@+id/pres_alquiactual"
-            android:icon="@drawable/ic_alquiler_actual"
-            android:title="Alquiler actual" />
-        <item
-            android:id="@+id/pes_comprarcred"
-            android:icon="@drawable/ic_comprar_creditos"
-            android:title="Comprar créditos" />
-        <item
-            android:id="@+id/pes_historial"
-            android:icon="@drawable/ic_historial"
-            android:title="Historial" />
+            android:id="@+id/pes_perfil"
+            android:icon="@drawable/ic_perfil"
+            android:title="Perfil" />
         <item
             android:id="@+id/pes_repincidencia"
             android:icon="@drawable/ic_incidencia"
@@ -33,8 +29,8 @@
     </group>
 
     <group
-        android:checkableBehavior="single"
-        android:id="@+id/group2">
+        android:id="@+id/group2"
+        android:checkableBehavior="single">
         <item
             android:id="@+id/pes_cerrarsesion"
             android:icon="@drawable/ic_cerrar_sesion"
