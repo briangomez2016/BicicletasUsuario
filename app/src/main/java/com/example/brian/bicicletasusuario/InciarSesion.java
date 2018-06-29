@@ -86,7 +86,7 @@ public class InciarSesion extends AppCompatActivity {
         call.enqueue(new Callback<RespuestaUsuario>() {
             @Override
             public void onResponse(Call<RespuestaUsuario> call, Response<RespuestaUsuario> response) {
-                if (response.body().getCodigo().equals("1")){
+                if (response.body().getCodigo().equals("2")){
                 if(recordar==true){
                     recordarUsuario(email,pass);
                 }
