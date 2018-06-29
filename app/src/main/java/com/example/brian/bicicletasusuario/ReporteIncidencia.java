@@ -1,6 +1,7 @@
 package com.example.brian.bicicletasusuario;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -21,7 +22,9 @@ import android.widget.Toast;
 
 import com.example.brian.bicicletasusuario.ApiCliente.ApiCliente;
 import com.example.brian.bicicletasusuario.ApiInterface.ApiInterface;
+import com.example.brian.bicicletasusuario.ApiInterface.RespuestaIncidencia;
 import com.example.brian.bicicletasusuario.ApiInterface.RespuestaParadas;
+import com.example.brian.bicicletasusuario.ApiInterface.RespuestaUsuario;
 import com.example.brian.bicicletasusuario.Clases.Parada;
 import com.google.gson.internal.bind.ArrayTypeAdapter;
 
@@ -49,7 +52,7 @@ public class ReporteIncidencia extends Fragment {
     String paradaSeleccionada;
 
     public ReporteIncidencia() {
-        paradaSeleccionada = "";
+        paradaSeleccionada = null;
     }
 
     @Override
@@ -65,10 +68,10 @@ public class ReporteIncidencia extends Fragment {
         ButterKnife.bind(this, v);
         cargarParadas();
 
-        btnReportar.setOnClickListener(new View.OnClickListener(){
+        btnReportar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               reportar();
+                reportar();
             }
         });
 
@@ -122,8 +125,8 @@ public class ReporteIncidencia extends Fragment {
                         if (position == 0) {
                             TextView textView = (TextView) parent.getChildAt(position);
                             textView.setTextColor(Color.GRAY);
-                            paradaSeleccionada  = "";
-                        }else{
+                            paradaSeleccionada = null;
+                        } else {
                             paradaSeleccionada = parent.getItemAtPosition(position).toString();
                         }
 
@@ -145,20 +148,43 @@ public class ReporteIncidencia extends Fragment {
         });
     }
 
-    private void reportar(){
+    private void reportar() {
         String textTipo = tipo.getText().toString().trim();
         String textDescripcion = descripcion.getText().toString().trim();
 
-        if(textTipo.equals("")){
-            Toast.makeText(getActivity(),"Especifique un tipo de inicidencia",Toast.LENGTH_SHORT).show();
+        if (textTipo.equals("")) {
+            Toast.makeText(getActivity(), "Especifique un tipo de inicidencia", Toast.LENGTH_SHORT).show();
             return;
-        }else if(textDescripcion.equals("")){
-            Toast.makeText(getActivity(),"Especifique una descipción de la inicidencia",Toast.LENGTH_SHORT).show();
+        } else if (textDescripcion.equals("")) {
+            Toast.makeText(getActivity(), "Especifique una descipción de la inicidencia", Toast.LENGTH_SHORT).show();
             return;
-        }else{
-            Toast.makeText(getActivity(),"Tipo: "+textTipo,Toast.LENGTH_SHORT).show();
-            Toast.makeText(getActivity(),"Descipción: "+textDescripcion,Toast.LENGTH_SHORT).show();
-            Toast.makeText(getActivity(),"Parada: "+paradaSeleccionada,Toast.LENGTH_SHORT).show();
+        } else {
+            // Toast.makeText(getActivity(),"Tipo: "+textTipo,Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getActivity(),"Descipción: "+textDescripcion,Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getActivity(),"Parada: "+paradaSeleccionada,Toast.LENGTH_SHORT).show();
+            enviarReporte(textDescripcion, textTipo);
         }
+    }
+
+    private void enviarReporte(String descripcion, String tipo) {
+        SharedPreferences sp = this.getActivity().getSharedPreferences("usuario", Context.MODE_PRIVATE);
+        Call<RespuestaIncidencia> call = ApiCliente.getClient().create(ApiInterface.class).reportarIncidencia(sp.getString("email", null), paradaSeleccionada, "0", null, descripcion);
+        call.enqueue(new Callback<RespuestaIncidencia>() {
+
+            @Override
+            public void onResponse(Call<RespuestaIncidencia> call, Response<RespuestaIncidencia> response) {
+                if(response.body().getCodigo().equals("1")){
+                    Toast.makeText(getActivity(), "Inicidencia enviada, gracias por reportarla.", Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(getActivity(), "Error al enviar la incidencia.", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<RespuestaIncidencia> call, Throwable t) {
+                Toast.makeText(getActivity(),"Error de conexion con el servidor",Toast.LENGTH_SHORT);
+            }
+        });
+
     }
 }
