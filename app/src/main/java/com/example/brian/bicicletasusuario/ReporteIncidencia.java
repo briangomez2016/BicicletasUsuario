@@ -2,6 +2,7 @@ package com.example.brian.bicicletasusuario;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -124,7 +125,7 @@ public class ReporteIncidencia extends Fragment {
                         //Poner el primer valor en color gris
                         if (position == 0) {
                             TextView textView = (TextView) parent.getChildAt(position);
-                            textView.setTextColor(Color.GRAY);
+                            textView.setTextColor(R.color.hintReportarIncidencia);
                             paradaSeleccionada = null;
                         } else {
                             paradaSeleccionada = parent.getItemAtPosition(position).toString();
@@ -159,22 +160,23 @@ public class ReporteIncidencia extends Fragment {
             Toast.makeText(getActivity(), "Especifique una descipción de la inicidencia", Toast.LENGTH_SHORT).show();
             return;
         } else {
-            // Toast.makeText(getActivity(),"Tipo: "+textTipo,Toast.LENGTH_SHORT).show();
-            //Toast.makeText(getActivity(),"Descipción: "+textDescripcion,Toast.LENGTH_SHORT).show();
-            //Toast.makeText(getActivity(),"Parada: "+paradaSeleccionada,Toast.LENGTH_SHORT).show();
-            enviarReporte(textDescripcion, textTipo);
+             enviarReporte(textDescripcion, textTipo);
         }
     }
 
-    private void enviarReporte(String descripcion, String tipo) {
+    private void enviarReporte(String textDescripcion, final String textTipo) {
         SharedPreferences sp = this.getActivity().getSharedPreferences("usuario", Context.MODE_PRIVATE);
-        Call<RespuestaIncidencia> call = ApiCliente.getClient().create(ApiInterface.class).reportarIncidencia(sp.getString("email", null), paradaSeleccionada, "0", null, descripcion);
+        Call<RespuestaIncidencia> call = ApiCliente.getClient().create(ApiInterface.class).reportarIncidencia(sp.getString("email", null), paradaSeleccionada, "0", null, textDescripcion);
         call.enqueue(new Callback<RespuestaIncidencia>() {
 
             @Override
             public void onResponse(Call<RespuestaIncidencia> call, Response<RespuestaIncidencia> response) {
                 if(response.body().getCodigo().equals("1")){
                     Toast.makeText(getActivity(), "Inicidencia enviada, gracias por reportarla.", Toast.LENGTH_SHORT).show();
+                    tipo.setText("");
+                    descripcion.setText("");
+                    spinnerParada.setSelection(0);
+                    spinnerParada.setSelected(true);
                 }else{
                     Toast.makeText(getActivity(), "Error al enviar la incidencia.", Toast.LENGTH_SHORT).show();
                 }
