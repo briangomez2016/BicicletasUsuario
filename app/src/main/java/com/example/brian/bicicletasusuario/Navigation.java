@@ -83,19 +83,25 @@ public class Navigation extends AppCompatActivity
                 fragment = new VerMapa();
                 fragmentTransaction = true;
                 break;
+            case R.id.pes_repincidencia:
+                fragment = new ReporteIncidencia();
+                fragmentTransaction = true;
+                break;
             case R.id.pes_cerrarsesion:
-                SharedPreferences sp = getSharedPreferences ("usuario", MODE_PRIVATE);
-                SharedPreferences.Editor et = sp.edit ();
-                et.putString ("email", null);
-                et.putString ("password", null);
-                et.commit ();
+                SharedPreferences sp = getSharedPreferences("usuario", MODE_PRIVATE);
+                SharedPreferences.Editor et = sp.edit();
+                et.putString("email", null);
+                et.putString("password", null);
+                et.commit();
                 Intent intent = new Intent(Navigation.this, InciarSesion.class);
                 startActivity(intent);
-		}
 
-        if(fragmentTransaction){
+
+        }
+
+        if (fragmentTransaction) {
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.contenido_navigation,fragment)
+                    .replace(R.id.contenido_navigation, fragment)
                     .commit();
             item.setChecked(true);
             getSupportActionBar().setTitle(item.getTitle());
