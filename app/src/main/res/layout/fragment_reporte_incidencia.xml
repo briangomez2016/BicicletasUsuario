@@ -14,18 +14,19 @@
         android:gravity="center"
         android:padding="20dp">
 
-        <EditText
-            android:id="@+id/tipo"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Tipo"
             android:background="@drawable/fondo_gris_redondeado"
-            android:textColorHint="@color/hintReportarIncidencia"
             android:paddingTop="2dp"
             android:paddingBottom="2dp"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:inputType="text" />
+            android:layout_marginTop="10dp">
+            <Spinner
+                android:id="@+id/tipo"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:textAlignment="center" />
+        </LinearLayout>
 
         <EditText
             android:id="@+id/descripcion"
