@@ -37,4 +37,8 @@ public interface ApiInterface {
     @GET("perfil")
     Call<RespuestaUsuario> getPerfil(@Query("email") String email);
 
+    @FormUrlEncoded
+    @POST("alquileres")
+    Call<RespuestaAlquileres> getAlquileres(@Field("email") String email);
+
 }

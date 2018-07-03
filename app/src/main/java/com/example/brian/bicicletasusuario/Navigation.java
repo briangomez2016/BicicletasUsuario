@@ -95,7 +95,11 @@ public class Navigation extends AppCompatActivity
                 et.commit();
                 Intent intent = new Intent(Navigation.this, InciarSesion.class);
                 startActivity(intent);
-
+                break;
+            case R.id.pes_historial:
+                fragment = new HistoricoAlquileres();
+                fragmentTransaction = true;
+                break;
 
         }
 
