@@ -30,8 +30,6 @@ public class Navigation extends AppCompatActivity
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        //Abrir un fragment por defecto
-        onNavigationItemSelected( navigationView.getMenu().findItem(R.id.pes_perfil));
         navigationView.setNavigationItemSelectedListener(this);
     }
 
@@ -97,6 +95,12 @@ public class Navigation extends AppCompatActivity
                 et.commit();
                 Intent intent = new Intent(Navigation.this, InciarSesion.class);
                 startActivity(intent);
+                break;
+            case R.id.pes_historial:
+                fragment = new HistoricoAlquileres();
+                fragmentTransaction = true;
+                break;
+
         }
 
         if (fragmentTransaction) {

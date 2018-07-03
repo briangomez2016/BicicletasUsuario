@@ -41,11 +41,11 @@ public class InciarSesion extends AppCompatActivity {
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
-        SharedPreferences sp = getSharedPreferences("usuario" , MODE_PRIVATE);
-        String UserEmail = sp.getString("email",null);
-        String UserPass = sp.getString("password",null);
-        if(UserEmail!=null){
-            iniciar(UserEmail,UserPass,true);
+        SharedPreferences sp = getSharedPreferences("usuario", MODE_PRIVATE);
+        String UserEmail = sp.getString("email", null);
+        String UserPass = sp.getString("password", null);
+        if (UserEmail != null) {
+            iniciar(UserEmail, UserPass, true);
         }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
@@ -55,47 +55,59 @@ public class InciarSesion extends AppCompatActivity {
         iniciar.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 String e = email.getText().toString();
-                String p =pass.getText().toString();
-                if(e.isEmpty() ){
+                String p = pass.getText().toString();
+                if (e.isEmpty()) {
                     Toast.makeText(InciarSesion.this, "vacio", Toast.LENGTH_SHORT).show();
-                    usuarioError.setError("Debe Ingresar Un Correo Valido");}
-                if(p.isEmpty())
-                {passError.setError("Debe Ingresar Su Contraseña");
+                    usuarioError.setError("Debe Ingresar Un Correo Valido");
                 }
-                if(!p.isEmpty() && !e.isEmpty()){
-                    if(recordar.isChecked()){
-                        iniciar(e,p,true);
-                    }else{iniciar(e,p,false);}
+                if (p.isEmpty()) {
+                    passError.setError("Debe Ingresar Su Contraseña");
+                }
+                if (!p.isEmpty() && !e.isEmpty()) {
+                    if (recordar.isChecked()) {
+                        iniciar(e, p, true);
+                    } else {
+                        iniciar(e, p, false);
+                    }
                 }
             }
         });
     }
 
 
-    private void recordarUsuario(String email,String pass){
-        SharedPreferences sp = getSharedPreferences ("usuario", MODE_PRIVATE);
-        SharedPreferences.Editor et = sp.edit ();
-        et.putString ("email", email);
-        et.putString ("password", pass);
-        et.commit ();
+    private void recordarUsuario(String email, String pass) {
+        SharedPreferences sp = getSharedPreferences("usuario", MODE_PRIVATE);
+        SharedPreferences.Editor et = sp.edit();
+        et.putString("email", email);
+        et.putString("password", pass);
+        et.commit();
     }
-    private void iniciar(final String email, final String pass, final Boolean recordar){
+
+    private void iniciar(final String email, final String pass, final Boolean recordar) {
         final ApiInterface api = ApiCliente.getClient().create(ApiInterface.class);
         final String idMovil = FirebaseInstanceId.getInstance().getToken();
-        Call<RespuestaUsuario> call = api.iniciar(email,pass,idMovil);
+        Call<RespuestaUsuario> call = api.iniciar(email, pass, idMovil);
         call.enqueue(new Callback<RespuestaUsuario>() {
             @Override
             public void onResponse(Call<RespuestaUsuario> call, Response<RespuestaUsuario> response) {
-                if (response.body().getCodigo().equals("2")){
-                if(recordar==true){
-                    recordarUsuario(email,pass);
-                }
-                    Intent intent = new Intent(InciarSesion.this, Navigation.class);
-                    startActivity(intent);
-                }else{
+                if (response.body().getCodigo().equals("2")) {
+                    if (recordar == true) {
+                        recordarUsuario(email, pass);
+                    } else {
+                        Toast.makeText(InciarSesion.this,email == null ? "EMAIL NULL INICIAR SESION" : email,Toast.LENGTH_LONG).show();
+                        SharedPreferences sp = getSharedPreferences("usuario", MODE_PRIVATE);
+                        SharedPreferences.Editor et = sp.edit();
+                        et.putString("email", email);
+                        et.commit();
+                    }
+                        Intent intent = new Intent(InciarSesion.this, Navigation.class);
+                        startActivity(intent);
+
+                } else {
                     Toast.makeText(InciarSesion.this, "Usuario O Contraseña Invalido", Toast.LENGTH_SHORT).show();
                 }
             }
+
             @Override
             public void onFailure(Call<RespuestaUsuario> call, Throwable t) {
                 Toast.makeText(InciarSesion.this, t.getMessage().toString(), Toast.LENGTH_SHORT).show();
@@ -103,7 +115,7 @@ public class InciarSesion extends AppCompatActivity {
         });
     }
 
-    public void Registrarse(View v){
+    public void Registrarse(View v) {
         Intent intent = new Intent(InciarSesion.this, RegistroUsuario.class);
         startActivity(intent);
     }
