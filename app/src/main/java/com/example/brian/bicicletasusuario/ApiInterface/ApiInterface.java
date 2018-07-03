@@ -31,6 +31,15 @@ public interface ApiInterface {
                                    @Field("uid") String idMovil
     );
 
+
+    @FormUrlEncoded
+    @POST("reportarIncidencia")
+    Call<RespuestaIncidencia> reportarIncidencia(@Field("usr") String usr,
+                                          @Field("parada") String parada,
+                                          @Field("estado") String estado,
+                                          @Field("admin") String admin,
+                                          @Field("comentario") String comentario);
+
     @GET("paradas")
     Call<RespuestaParadas> getParadas();
 
