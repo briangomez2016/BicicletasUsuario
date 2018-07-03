@@ -1,19 +1,24 @@
 package com.example.brian.bicicletasusuario;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -37,28 +42,30 @@ import retrofit2.Response;
 public class Perfil extends Fragment {
     private OnFragmentInteractionListener mListener;
 
-    @BindView(R.id.ivImagen)
+    @BindView (R.id.ivImagen)
     ImageView ivImagen;
-    @BindView(R.id.tvSaldo)
+    @BindView (R.id.tvSaldo)
     TextView tvSaldo;
-    @BindView(R.id.tvEtiquetaCed)
+    @BindView (R.id.tvEtiquetaCed)
     TextView tvEtiquetaCed;
-    @BindView(R.id.tvCedula)
+    @BindView (R.id.tvCedula)
     TextView tvCedula;
-    @BindView(R.id.tvNombre)
+    @BindView (R.id.tvNombre)
     TextView tvNombre;
-    @BindView(R.id.tvCorreo)
+    @BindView (R.id.tvCorreo)
     TextView tvCorreo;
-    @BindView(R.id.tvTelefono)
+    @BindView (R.id.tvTelefono)
     TextView tvTelefono;
-    @BindView(R.id.tvDireccion)
+    @BindView (R.id.tvDireccion)
     TextView tvDireccion;
-    @BindView(R.id.tvActivo)
+    @BindView (R.id.tvActivo)
     TextView tvActivo;
-    @BindView(R.id.spPrecios)
+    @BindView (R.id.spPrecios)
     Spinner spPrecios;
-    @BindView(R.id.btnComprarCreditos)
+    @BindView (R.id.btnComprarCreditos)
     Button btnComprar;
+    @BindView (R.id.btnEditarPerfil)
+    Button btnEditarPerfil;
 
     public Perfil() {
     }
@@ -79,13 +86,15 @@ public class Perfil extends Fragment {
         list.add("50");
         list.add("100");
         list.add("500");
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getContext(), R.layout.spinner_precio, list);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getContext(), R.layout.spinner_precio,list);
         spPrecios.setAdapter(adapter);
         ApiInterface api = ApiCliente.getClient().create(ApiInterface.class);
         // TODO: Cambiar el email hardcordeado
-        SharedPreferences sp = this.getActivity().getSharedPreferences("usuario", Context.MODE_PRIVATE);
-        String email = sp.getString("email", null);
-        Toast.makeText(getContext(),email == null ? "EMAIL NULL" : email , Toast.LENGTH_LONG).show();
+
+        SharedPreferences pref = this.getActivity().getApplicationContext().getSharedPreferences("logeado",Context.MODE_PRIVATE);
+        String email=pref.getString("email", null);
+
+
         Call<RespuestaUsuario> call = api.getPerfil(email);
         call.enqueue(new Callback<RespuestaUsuario>() {
             @Override
@@ -114,7 +123,7 @@ public class Perfil extends Fragment {
 
             @Override
             public void onFailure(Call<RespuestaUsuario> call, Throwable t) {
-                Log.d("ASD", t.getMessage());
+                Log.d ("ASD", t.getMessage());
                 Toast.makeText(Perfil.this.getContext(), "No se pudo cargar el perfil", Toast.LENGTH_SHORT).show();
             }
         });
@@ -122,6 +131,7 @@ public class Perfil extends Fragment {
         btnComprar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                System.out.println("Masterpiece");
                 String cantidad = spPrecios.getSelectedItem().toString();
                 if (cantidad != null && !cantidad.isEmpty()) {
                     // TODO: Editar perfil con nuevo saldo...
@@ -130,6 +140,23 @@ public class Perfil extends Fragment {
             }
         });
 
+        btnEditarPerfil.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                String cantidad = spPrecios.getSelectedItem().toString();
+                if (cantidad != null && !cantidad.isEmpty()) {
+
+                    Fragment fragment = new EditarPerfil ();
+                    FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                    fragmentTransaction.replace(R.id.contenido_navigation, fragment);
+                    fragmentTransaction.addToBackStack(null);
+                    fragmentTransaction.commit();
+
+                } else
+                    Toast.makeText(Perfil.this.getContext(), "No se pudo editar el perfil", Toast.LENGTH_SHORT).show();
+            }
+        });
         return view;
     }
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -38,7 +38,7 @@
                     android:textStyle="bold"
                     android:text="Cedula:"/>
 
-                <TextView
+                <EditText
                     android:id="@+id/tvCedula"
                     android:layout_weight="1"
                     android:layout_width="match_parent"
@@ -46,7 +46,7 @@
                     android:textSize="20sp"
                     android:textColor="#000"
                     android:layout_height="match_parent"
-                    android:text="x.xxx.xxx-x"/>
+                    android:text=""/>
 
             </LinearLayout>
 
@@ -72,7 +72,7 @@
                     android:textStyle="bold"
                     android:text="Nombre:"/>
 
-                <TextView
+                <EditText
                     android:id="@+id/tvNombre"
                     android:layout_weight="1"
                     android:layout_width="match_parent"
@@ -106,7 +106,7 @@
                     android:textStyle="bold"
                     android:text="Correo:"/>
 
-                <TextView
+                <EditText
                     android:id="@+id/tvCorreo"
                     android:layout_weight="1"
                     android:layout_width="match_parent"
@@ -114,7 +114,7 @@
                     android:textSize="20sp"
                     android:textColor="#000"
                     android:layout_height="match_parent"
-                    android:text="ejemplo@correo.com"/>
+                    android:text=""/>
 
             </LinearLayout>
 
@@ -140,7 +140,7 @@
                     android:textStyle="bold"
                     android:text="Telefono:"/>
 
-                <TextView
+                <EditText
                     android:id="@+id/tvTelefono"
                     android:layout_weight="1"
                     android:layout_width="match_parent"
@@ -148,7 +148,7 @@
                     android:textSize="20sp"
                     android:textColor="#000"
                     android:layout_height="match_parent"
-                    android:text="xxxx xxxx"/>
+                    android:text=""/>
 
             </LinearLayout>
 
@@ -174,7 +174,7 @@
                     android:textStyle="bold"
                     android:text="Direccion:"/>
 
-                <TextView
+                <EditText
                     android:id="@+id/tvDireccion"
                     android:layout_weight="1"
                     android:layout_width="match_parent"
@@ -206,10 +206,10 @@
                     android:textSize="20sp"
                     android:textColor="#000"
                     android:textStyle="bold"
-                    android:text="Activo:"/>
+                    android:text="Contraseña:"/>
 
-                <TextView
-                    android:id="@+id/tvActivo"
+                <EditText
+                    android:id="@+id/tvpass"
                     android:layout_weight="1"
                     android:layout_width="match_parent"
                     android:textAlignment="center"
@@ -220,62 +220,30 @@
 
             </LinearLayout>
 
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:layout_marginHorizontal="30dp"
+                android:background="@drawable/linea_entre_medio"/>
             <LinearLayout
                 android:layout_width="match_parent"
+                android:layout_marginHorizontal="30dp"
+                android:layout_marginVertical="5dp"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="50dp"
-                android:layout_marginTop="15dp"
-                android:background="@drawable/fondo_saldo"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/tvSaldo"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="5dp"
-                    android:layout_weight="2"
-                    android:text="Saldo: $1000"
-                    android:textAlignment="center"
-                    android:textColor="#FFF"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
-
-                <Spinner
-                    android:id="@+id/spPrecios"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="50dp"
-                    android:layout_marginVertical="10dp"
-                    android:entries="@array/precios">
-
-                </Spinner>
-
-                <Button
-                    android:id="@+id/btnComprarCreditos"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginHorizontal="10dp"
-                    android:background="@drawable/fondo_boton_compra"
-                    android:textColor="@color/colorPrimary"
-                    android:layout_marginBottom="10dp"
-                    android:textStyle="bold"
-                    android:text="Cargar" />
-
-                <Button
-                    android:id="@+id/btnEditarPerfil"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginHorizontal="10dp"
-                    android:background="@drawable/fondo_boton_compra"
-                    android:textColor="@color/colorPrimary"
-                    android:layout_marginBottom="10dp"
-                    android:textStyle="bold"
-                    android:text="Editar Perfil" />
+                android:orientation="horizontal">
 
             </LinearLayout>
+
+            <Button
+                android:id="@+id/btnEditar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignStart="@+id/pass"
+                android:layout_gravity="center_horizontal"
+                android:layout_below="@+id/pass"
+                android:text="Aceptar" />
 
         </LinearLayout>
 
     </ScrollView>
-
 </FrameLayout>

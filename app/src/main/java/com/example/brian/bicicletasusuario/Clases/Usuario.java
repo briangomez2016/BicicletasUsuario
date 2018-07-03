@@ -1,6 +1,14 @@
 package com.example.brian.bicicletasusuario.Clases;
 
-import android.text.Editable;
+import com.example.brian.bicicletasusuario.ApiCliente.ApiCliente;
+import com.example.brian.bicicletasusuario.ApiInterface.ApiInterface;
+import com.example.brian.bicicletasusuario.ApiInterface.RespuestaUsuario;
+import com.example.brian.bicicletasusuario.ApiInterface.Usuarios;
+import com.example.brian.bicicletasusuario.EditarPerfil;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class Usuario {
 
@@ -118,6 +126,21 @@ public class Usuario {
         this.cantidadAlquileres = cantidadAlquileres;
     }
 
+    public static void editarPerfil(final EditarPerfil u, String ci, String nombre, String correo, String telefono, String direccion, String pass){
+        ApiInterface ai = ApiCliente.getClient().create(ApiInterface.class);
+        Call<RespuestaUsuario> call = ai.editarPerfil(ci, nombre, correo, telefono, direccion, pass);
+        call.enqueue (new Callback<RespuestaUsuario> () {
+            @Override
+            public void onResponse(Call<RespuestaUsuario> call, Response<RespuestaUsuario> response) {
+                u.editarPerfil(response.body().getCodigo().equals("1") ? true : false);
+            }
 
+            @Override
+            public void onFailure(Call<RespuestaUsuario> call, Throwable t) {
+
+            }
+        });
+
+    }
 
 }
