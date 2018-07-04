@@ -6,13 +6,13 @@ public class Alquiler {
     private String horaInicio;
     private String horaFin;
     private String parada;
-    private int bici;
+    private int bicicleta;
 
-    public Alquiler(String horaInicio, String horaFin, String parada, int bici) {
+    public Alquiler(String horaInicio, String horaFin, String parada, int bicicleta) {
         this.horaInicio = horaInicio;
         this.horaFin = horaFin;
         this.parada = parada;
-        this.bici = bici;
+        this.bicicleta = bicicleta;
     }
 
     public String getHoraInicio() {
@@ -39,11 +39,11 @@ public class Alquiler {
         this.parada = parada;
     }
 
-    public int getBici() {
-        return bici;
+    public int getBicicleta() {
+        return bicicleta;
     }
 
-    public void setBici(int bici) {
-        this.bici = bici;
+    public void setBicicleta(int bicicleta) {
+        this.bicicleta = bicicleta;
     }
 }
