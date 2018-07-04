@@ -45,12 +45,13 @@ public class Navigation extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
+        //Abrir un fragment por defecto
+        onNavigationItemSelected( navigationView.getMenu().findItem(R.id.pes_vermapa));
         ButterKnife.bind(this);
-
 		FirebaseMessaging.getInstance().unsubscribeFromTopic("habilitado");
 
-        onNavigationItemSelected(navigationView.getMenu().findItem(R.id.pes_perfil));
+
+
     }
 
     @Override
