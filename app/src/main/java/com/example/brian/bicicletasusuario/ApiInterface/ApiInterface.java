@@ -50,4 +50,14 @@ public interface ApiInterface {
     @GET("alquileresUsuario")
     Call<RespuestaAlquileres> getAlquileres(@Query("usuario") String email);
 
+    @FormUrlEncoded
+    @POST("editarPerfil")
+    Call<RespuestaUsuario> editarPerfil(@Field("ci") String ci,
+                                        @Field("nombre") String nombre,
+                                        @Field("email") String email,
+                                        @Field("telefono") String tel,
+                                        @Field("direccion") String dir,
+                                        @Field("contrasena") String pass
+    );
+
 }
