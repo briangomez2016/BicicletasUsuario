@@ -1,7 +1,9 @@
 package com.example.brian.bicicletasusuario;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.location.Location;
@@ -25,10 +27,13 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.brian.bicicletasusuario.ApiCliente.ApiCliente;
 import com.example.brian.bicicletasusuario.ApiInterface.ApiInterface;
+import com.example.brian.bicicletasusuario.ApiInterface.Respuesta;
+import com.example.brian.bicicletasusuario.ApiInterface.RespuestaAlquilerActual;
 import com.example.brian.bicicletasusuario.ApiInterface.RespuestaParadas;
 import com.example.brian.bicicletasusuario.Clases.Parada;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -73,8 +78,12 @@ public class VerMapa extends Fragment implements OnMapReadyCallback, GoogleMap.O
 	Button btnPanelDevolver;
 	@BindView (R.id.btnQRDevolver)
 	Button btnQRDevolver;
+	@BindView (R.id.btnConfirmarDevolver)
+	Button btnConfirmarDevolver;
 	@BindView (R.id.etQRDevolver)
 	EditText etQRDevolver;
+	@BindView (R.id.progressBarDevolver)
+	ProgressBar progressBarDevolver;
 
 	private List<Marker> paradas;
 
@@ -128,8 +137,13 @@ public class VerMapa extends Fragment implements OnMapReadyCallback, GoogleMap.O
 		btnPanelDevolver.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				llOpciones.setVisibility(View.GONE);
-				llPanelDevolver.setVisibility(View.VISIBLE);
+				if (paradaSeleccionada == null || paradaSeleccionada.getCantidadOcupada() == 0) {
+					Toast.makeText(VerMapa.this.getContext(), "Parada llena, no se puede devolver una bici", Toast.LENGTH_SHORT).show();
+					return;
+				} else {
+					llOpciones.setVisibility(View.GONE);
+					llPanelDevolver.setVisibility(View.VISIBLE);
+				}
 			}
 		});
 
@@ -144,6 +158,43 @@ public class VerMapa extends Fragment implements OnMapReadyCallback, GoogleMap.O
 			@Override
 			public void onClick(View v) {
 				escanearQR (0);
+			}
+		});
+
+		btnConfirmarDevolver.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if (paradaSeleccionada == null || paradaSeleccionada.getCantidadOcupada() == 0) {
+					Toast.makeText(VerMapa.this.getContext(), "Parada llena, no se puede devolver una bici", Toast.LENGTH_SHORT).show();
+					llPanelDevolver.setVisibility(View.GONE);
+					return;
+				} else {
+					btnConfirmarDevolver.setVisibility(View.GONE);
+					progressBarDevolver.setVisibility(View.VISIBLE);
+
+					ApiInterface api = ApiCliente.getClient().create(ApiInterface.class);
+					Call<Respuesta> call = api.devolverAlquiler(etQRDevolver.getText().toString(), paradaSeleccionada.getId(), 2);
+					call.enqueue(new Callback<Respuesta>() {
+						@Override
+						public void onResponse(Call<Respuesta> call, Response<Respuesta> response) {
+							if (!response.body().getCodigo().equals("0")) {
+								Toast.makeText(VerMapa.this.getContext(), "No se pudo devolver la bicicleta", Toast.LENGTH_SHORT).show();
+							} else {
+								etQRDevolver.setText("");
+								llPanelDevolver.setVisibility(View.GONE);
+								Toast.makeText(VerMapa.this.getContext(), "Bicicleta devuelta", Toast.LENGTH_SHORT).show();
+							}
+							btnConfirmarDevolver.setVisibility(View.VISIBLE);
+							progressBarDevolver.setVisibility(View.GONE);
+						}
+						@Override
+						public void onFailure(Call<Respuesta> call, Throwable t) {
+							Toast.makeText(VerMapa.this.getContext(), "No se conecto con el servidor y no se pudo devolver la bicicleta", Toast.LENGTH_SHORT).show();
+							btnConfirmarDevolver.setVisibility(View.VISIBLE);
+							progressBarDevolver.setVisibility(View.GONE);
+						}
+					});
+				}
 			}
 		});
 		
@@ -256,10 +307,67 @@ public class VerMapa extends Fragment implements OnMapReadyCallback, GoogleMap.O
 		});
 	}
 
+	Parada paradaSeleccionada = null;
+
 	@Override
 	public boolean onMarkerClick(Marker marker) {
-		if (llOpciones.getVisibility () == View.GONE)
-			llOpciones.setVisibility (View.VISIBLE);
+		final String id = marker.getTitle().split("\\|")[0].trim();
+		ApiInterface api = ApiCliente.getClient().create(ApiInterface.class);
+		Call<RespuestaParadas> call = api.getParadas();
+		call.enqueue(new Callback<RespuestaParadas>() {
+			@Override
+			public void onResponse(Call<RespuestaParadas> call, Response<RespuestaParadas> response) {
+				if (response.body().getCodigo().equals("1")) {
+					boolean a = false;
+					for (Parada p : response.body().getParadas()) {
+						if (id.equals(p.getId()+"")) {
+							paradaSeleccionada = p;
+							a = true;
+							break;
+						}
+					}
+					if (!a)
+						paradaSeleccionada = null;
+
+					if (paradaSeleccionada != null) {
+
+						SharedPreferences pref = VerMapa.this.getContext().getApplicationContext().getSharedPreferences("usuario", Context.MODE_PRIVATE);
+						String email=pref.getString("email", null);
+
+						ApiInterface api = ApiCliente.getClient().create(ApiInterface.class);
+						Call<RespuestaAlquilerActual> call2 = api.alquilerActual(email);
+						call2.enqueue(new Callback<RespuestaAlquilerActual>() {
+							@Override
+							public void onResponse(Call<RespuestaAlquilerActual> call, Response<RespuestaAlquilerActual> response) {
+								if (response.body().getCodigo().equals("1")) {
+									if (response.body().getAlquiler() == null) {
+										btnPanelAluilar.setVisibility(View.VISIBLE);
+										btnPanelDevolver.setVisibility(View.GONE);
+									} else {
+										btnPanelAluilar.setVisibility(View.GONE);
+										btnPanelDevolver.setVisibility(View.VISIBLE);
+									}
+									llOpciones.setVisibility(View.VISIBLE);
+								} else
+									Toast.makeText(VerMapa.this.getContext(), "No se pudo conectar con el servidor", Toast.LENGTH_SHORT).show();
+							}
+
+							@Override
+							public void onFailure(Call<RespuestaAlquilerActual> call, Throwable t) {
+								Toast.makeText(VerMapa.this.getContext(), "No se pudo conectar con el servidor", Toast.LENGTH_SHORT).show();
+							}
+						});
+					}
+				} else
+					Toast.makeText(VerMapa.this.getContext(), "No se pudo conectar con el servidor", Toast.LENGTH_SHORT).show();
+			}
+
+			@Override
+			public void onFailure(Call<RespuestaParadas> call, Throwable t) {
+				Toast.makeText(VerMapa.this.getContext(), "No se pudo conectar con el servidor", Toast.LENGTH_SHORT).show();
+			}
+		});
+		
 		return false;
 	}
 }

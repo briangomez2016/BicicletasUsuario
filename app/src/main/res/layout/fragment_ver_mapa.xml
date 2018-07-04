@@ -193,17 +193,30 @@
 
         </LinearLayout>
 
-        <Button
-            android:id="@+id/btnConfirmarDevolver"
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="10dp"
-            android:layout_marginBottom="10dp"
-            android:background="@drawable/fondo_blanco_round"
-            android:textColor="@color/colorPrimary"
-            android:textStyle="bold"
-            android:textSize="18sp"
-            android:text="Confirmar"/>
+            android:layout_marginBottom="10dp">
+
+            <Button
+                android:id="@+id/btnConfirmarDevolver"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/fondo_blanco_round"
+                android:textColor="@color/colorPrimary"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:visibility="visible"
+                android:text="Confirmar"/>
+
+            <ProgressBar
+                android:id="@+id/progressBarDevolver"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:visibility="gone"/>
+
+        </FrameLayout>
 
         <Button
             android:id="@+id/btnCerrarDevolver"

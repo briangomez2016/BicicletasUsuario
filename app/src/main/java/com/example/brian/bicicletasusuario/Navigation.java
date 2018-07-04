@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -17,7 +18,9 @@ import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
+import com.example.brian.bicicletasusuario.utils.Util;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessaging;
 
@@ -51,7 +54,10 @@ public class Navigation extends AppCompatActivity
 		FirebaseMessaging.getInstance().unsubscribeFromTopic("habilitado");
 
         onNavigationItemSelected(navigationView.getMenu().findItem(R.id.pes_perfil));
+
+        Util.setearRecordatorioFaltaPoco(10, 3);
     }
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
