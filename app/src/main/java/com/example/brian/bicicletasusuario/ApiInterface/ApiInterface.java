@@ -17,17 +17,18 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST("registrarse")
     Call<RespuestaUsuario> registrar(@Field("ci") String ci,
-                                    @Field("pasaporte") String pasaporte,
-                                    @Field("nombre") String nombre,
-                                    @Field("email") String email,
-                                    @Field("pass") String pass,
-                                    @Field("telefono") String tel,
-                                    @Field("direccion") String dir
+                                     @Field("pasaporte") String pasaporte,
+                                     @Field("nombre") String nombre,
+                                     @Field("email") String email,
+                                     @Field("pass") String pass,
+                                     @Field("telefono") String tel,
+                                     @Field("direccion") String dir
     );
+
     @FormUrlEncoded
     @POST("login")
     Call<RespuestaUsuario> iniciar(@Field("email") String email,
-                                    @Field("password") String pass,
+                                   @Field("password") String pass,
                                    @Field("uid") String idMovil
     );
 
@@ -35,10 +36,11 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST("reportarIncidencia")
     Call<RespuestaIncidencia> reportarIncidencia(@Field("usr") String usr,
-                                          @Field("parada") String parada,
-                                          @Field("estado") String estado,
-                                          @Field("admin") String admin,
-                                          @Field("comentario") String comentario);
+                                                 @Field("parada") String parada,
+                                                 @Field("estado") String estado,
+                                                 @Field("admin") String admin,
+                                                 @Field("comentario") String comentario,
+                                                 @Field("tipo") String tipo);
 
     @GET("paradas")
     Call<RespuestaParadas> getParadas();

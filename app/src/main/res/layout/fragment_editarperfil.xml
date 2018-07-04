@@ -238,8 +238,9 @@
                 android:id="@+id/btnEditar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignStart="@+id/pass"
                 android:layout_gravity="center_horizontal"
+                android:background="@drawable/fondo_primary_round"
+                android:textColor="@color/white"
                 android:layout_below="@+id/pass"
                 android:text="Aceptar" />
 

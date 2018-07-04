@@ -212,7 +212,7 @@ public class ReporteIncidencia extends Fragment {
 
     private void enviarReporte(String textDescripcion, final String textTipo) {
         SharedPreferences sp = this.getActivity().getSharedPreferences("usuario", Context.MODE_PRIVATE);
-        Call<RespuestaIncidencia> call = ApiCliente.getClient().create(ApiInterface.class).reportarIncidencia(sp.getString("email", null), paradaSeleccionada, "0", null, textDescripcion);
+        Call<RespuestaIncidencia> call = ApiCliente.getClient().create(ApiInterface.class).reportarIncidencia(sp.getString("email", null), paradaSeleccionada, "0", null, textDescripcion,tipoSeleccionado);
         call.enqueue(new Callback<RespuestaIncidencia>() {
 
             @Override
