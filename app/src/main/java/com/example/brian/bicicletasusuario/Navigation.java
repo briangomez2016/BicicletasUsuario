@@ -2,6 +2,8 @@ package com.example.brian.bicicletasusuario;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
@@ -46,10 +48,9 @@ public class Navigation extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         //Abrir un fragment por defecto
-        onNavigationItemSelected( navigationView.getMenu().findItem(R.id.pes_vermapa));
+        onNavigationItemSelected(navigationView.getMenu().findItem(R.id.pes_vermapa));
         ButterKnife.bind(this);
-		FirebaseMessaging.getInstance().unsubscribeFromTopic("habilitado");
-
+        FirebaseMessaging.getInstance().unsubscribeFromTopic("habilitado");
 
 
     }
@@ -143,7 +144,10 @@ public class Navigation extends AppCompatActivity
                     .replace(R.id.contenido_navigation, fragment)
                     .commit();
             item.setChecked(true);
-            getSupportActionBar().setTitle(item.getTitle());
+            getSupportActionBar().setTitle("  " + item.getTitle());
+            Drawable icon = item.getIcon();
+            icon.mutate().setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_ATOP);
+            getSupportActionBar().setIcon(icon);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
