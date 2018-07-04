@@ -62,4 +62,19 @@ public interface ApiInterface {
                                         @Field("contrasena") String pass
     );
 
+    @GET ("consultaAlquileresActuales")
+    Call<Respuesta> avisarFaltaPoco ();
+
+    @FormUrlEncoded
+    @POST("devolverBici")
+    Call<Respuesta> devolverAlquiler (
+            @Field("bicicleta") String bicicleta,
+            @Field("parada") int parada,
+            @Field("lugar") int lugar
+    );
+
+    @GET ("alquilerActual")
+    Call<RespuestaAlquilerActual> alquilerActual (
+            @Query("email") String email
+    );
 }
