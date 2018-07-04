@@ -22,9 +22,14 @@ public class Util {
 				Call<Respuesta> call = api.avisarFaltaPoco();
 				call.enqueue(new Callback<Respuesta>() {
 					@Override
-					public void onResponse(Call<Respuesta> call, Response<Respuesta> response) {}
+					public void onResponse(Call<Respuesta> call, Response<Respuesta> response) {
+						Log.d("NOTIFFFFFF", response.body().getCodigo());
+						Log.d("NOTIFFFFFF", response.body().getMensaje());
+					}
 					@Override
-					public void onFailure(Call<Respuesta> call, Throwable t) {}
+					public void onFailure(Call<Respuesta> call, Throwable t) {
+						Log.d("NOTIFFFFFF", "Error: " + t.getMessage());
+					}
 				});
 			}
 		}, (minutosDelAlquiler * 1000) - (avisarAntesDe * 1000));

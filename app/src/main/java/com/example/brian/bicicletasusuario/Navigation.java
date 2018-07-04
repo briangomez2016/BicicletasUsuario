@@ -53,12 +53,6 @@ public class Navigation extends AppCompatActivity
         //Abrir un fragment por defecto
         onNavigationItemSelected(navigationView.getMenu().findItem(R.id.pes_vermapa));
         ButterKnife.bind(this);
-        FirebaseMessaging.getInstance().unsubscribeFromTopic("habilitado");
-
-        onNavigationItemSelected(navigationView.getMenu().findItem(R.id.pes_perfil));
-
-        Util.setearRecordatorioFaltaPoco(10, 3);
-
     }
 
 
