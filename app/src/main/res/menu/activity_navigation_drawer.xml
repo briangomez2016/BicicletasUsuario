@@ -7,6 +7,10 @@
         android:id="@+id/group1"
         android:checkableBehavior="single">
         <item
+            android:id="@+id/pes_vermapa"
+            android:icon="@drawable/ic_ver_mapa"
+            android:title="Ver mapa" />
+        <item
             android:id="@+id/pes_alquiactual"
             android:icon="@drawable/ic_alquiler_actual"
             android:title="Alquiler actual" />
@@ -14,10 +18,6 @@
             android:id="@+id/pes_historial"
             android:icon="@drawable/ic_historial"
             android:title="Histórico de alquileres " />
-        <item
-            android:id="@+id/pes_vermapa"
-            android:icon="@drawable/ic_ver_mapa"
-            android:title="Ver mapa" />
         <item
             android:id="@+id/pes_perfil"
             android:icon="@drawable/ic_perfil"
