@@ -89,10 +89,10 @@ public class Perfil extends Fragment {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getContext(), R.layout.spinner_precio,list);
         spPrecios.setAdapter(adapter);
         ApiInterface api = ApiCliente.getClient().create(ApiInterface.class);
-        // TODO: Cambiar el email hardcordeado
 
-        SharedPreferences pref = this.getActivity().getApplicationContext().getSharedPreferences("logeado",Context.MODE_PRIVATE);
+        SharedPreferences pref = this.getActivity().getApplicationContext().getSharedPreferences("usuario",Context.MODE_PRIVATE);
         String email=pref.getString("email", null);
+        Toast.makeText(Perfil.this.getContext(),email ,Toast.LENGTH_LONG).show();
 
 
         Call<RespuestaUsuario> call = api.getPerfil(email);

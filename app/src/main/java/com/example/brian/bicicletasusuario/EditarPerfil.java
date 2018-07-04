@@ -108,7 +108,7 @@ public class EditarPerfil extends Fragment {
 	}
 
 	private void cargarPerfil(){
-		SharedPreferences pref = this.getActivity().getApplicationContext().getSharedPreferences("logeado", Context.MODE_PRIVATE);
+		SharedPreferences pref = this.getActivity().getApplicationContext().getSharedPreferences("usuario", Context.MODE_PRIVATE);
 		String email=pref.getString("email", null);
 		ApiInterface ai  = ApiCliente.getClient().create(ApiInterface.class);
 		Call<RespuestaUsuario> call = ai.getPerfil(email);

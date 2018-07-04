@@ -96,7 +96,6 @@ public class InciarSesion extends AppCompatActivity {
                     if (recordar == true) {
                         recordarUsuario(email, pass);
                     } else {
-                        Toast.makeText(InciarSesion.this,email == null ? "EMAIL NULL INICIAR SESION" : email,Toast.LENGTH_LONG).show();
                         SharedPreferences sp = getSharedPreferences("usuario", MODE_PRIVATE);
                         SharedPreferences.Editor et = sp.edit();
                         et.putString("email", email);
