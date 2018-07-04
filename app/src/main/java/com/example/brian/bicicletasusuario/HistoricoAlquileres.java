@@ -5,12 +5,14 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,11 +34,17 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class HistoricoAlquileres extends Fragment {
-    //public List<Alquiler> alquileres = null;
 
     @BindView(R.id.lista_alquileres)
     RecyclerView mRecyclerView;
     HistoricoAlquileresAdaptador adaptador;
+    List<Alquiler> alquileres = null;
+    @BindView(R.id.alquileres_vacio)
+    LinearLayout mensaje;
+    @BindView(R.id.carga)
+    LinearLayout cargando;
+    @BindView(R.id.swiperefresh)
+    SwipeRefreshLayout swipeRefresh;
 
     public HistoricoAlquileres() {
         // Required empty public constructor
@@ -53,8 +61,14 @@ public class HistoricoAlquileres extends Fragment {
                              Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_historico_alquileres, container, false);
         ButterKnife.bind(this, view);
-        //bdCargarAlquileres();
-        cargarAlquileres(new ArrayList<Alquiler>());
+        bdCargarAlquileres();
+
+        swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                bdCargarAlquileres();
+            }
+        });
         return view;
     }
 
@@ -78,46 +92,43 @@ public class HistoricoAlquileres extends Fragment {
             @Override
             public void onResponse(Call<RespuestaAlquileres> call, Response<RespuestaAlquileres> response) {
                 if (response.isSuccessful()) {
-                    //alquileres = response.body().getAlquileres();
-                    //cargarAlquileres(alquileres);
+                    if(response.body().getCodigo().equals("1")){
+
+                        alquileres = (response.body().getAlquileres() != null) ? response.body().getAlquileres() : new ArrayList<Alquiler>();
+                        Log.d("ASD", "onResponse: "+ alquileres.size());
+                        cargarAlquileres(alquileres);
+                    }else {
+                        mensaje.setVisibility(View.VISIBLE);
+                        cargando.setVisibility(View.GONE);
+                        swipeRefresh.setRefreshing(false);
+                    }
+                }else{
+                    mensaje.setVisibility(View.VISIBLE);
+                    cargando.setVisibility(View.GONE);
+                    swipeRefresh.setRefreshing(false);
                 }
             }
 
             @Override
             public void onFailure(Call<RespuestaAlquileres> call, Throwable t) {
-                //noHayBicicletas.setVisibility(View.VISIBLE);
+                mensaje.setVisibility(View.VISIBLE);
                 //Toast.makeText(getActivity(),"FAILURE",Toast.LENGTH_LONG).show();
             }
         });
     }
 
     private void cargarAlquileres(List<Alquiler> alquileres) {
-        //
-        Date horaInicio=null, horaFin=null;
-        try {
-            horaInicio = new SimpleDateFormat("yyyy-MM-dd hh:mm").parse("2011-01-01 12:00");
-            horaFin = new SimpleDateFormat("yyyy-MM-dd hh:mm").parse("2011-01-02 15:00");
-        } catch (ParseException e) {
-            e.printStackTrace();
+       if (alquileres.size() == 0) {
+            mensaje.setVisibility(View.VISIBLE);
+        } else {
+            mensaje.setVisibility(View.GONE);
         }
-        //
-        alquileres = new ArrayList<>();
-        alquileres.add(new Alquiler(horaInicio, horaFin, "Museo", 1));
-        alquileres.add(new Alquiler(horaInicio, horaFin, "Hospital", 2));
-        alquileres.add(new Alquiler(horaInicio, horaFin, "Conti", 4));
-        alquileres.add(new Alquiler(horaInicio, horaFin, "Innova", 5));
-        Log.d("ASD", "cargarAlquileres: "+ alquileres.size());
         adaptador = new HistoricoAlquileresAdaptador(getActivity(), alquileres);
         mRecyclerView.setAdapter(adaptador);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.setHasFixedSize(true);
-       // if (alquileres.size() == 0) {
-            //noHayBicicletas.setVisibility(View.VISIBLE);
-        //} else {
-            // noHayBicicletas.setVisibility(View.GONE);
-        //}
-        //cargandoBicicletas.setVisibility(View.GONE);
-        //swipeRefresh.setRefreshing(false);
+        cargando.setVisibility(View.GONE);
+        swipeRefresh.setRefreshing(false);
     }
 
 }

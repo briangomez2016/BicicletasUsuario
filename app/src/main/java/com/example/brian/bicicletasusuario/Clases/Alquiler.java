@@ -3,31 +3,31 @@ package com.example.brian.bicicletasusuario.Clases;
 import java.util.Date;
 
 public class Alquiler {
-    private Date horaInicio;
-    private Date horaFin;
+    private String horaInicio;
+    private String horaFin;
     private String parada;
-    private int bici;
+    private int bicicleta;
 
-    public Alquiler(Date horaInicio, Date horaFin, String parada, int bici) {
+    public Alquiler(String horaInicio, String horaFin, String parada, int bicicleta) {
         this.horaInicio = horaInicio;
         this.horaFin = horaFin;
         this.parada = parada;
-        this.bici = bici;
+        this.bicicleta = bicicleta;
     }
 
-    public Date getHoraInicio() {
+    public String getHoraInicio() {
         return horaInicio;
     }
 
-    public void setHoraInicio(Date horaInicio) {
+    public void setHoraInicio(String horaInicio) {
         this.horaInicio = horaInicio;
     }
 
-    public Date getHoraFin() {
+    public String getHoraFin() {
         return horaFin;
     }
 
-    public void setHoraFin(Date HoraFin) {
+    public void setHoraFin(String HoraFin) {
         this.horaFin = HoraFin;
     }
 
@@ -39,11 +39,11 @@ public class Alquiler {
         this.parada = parada;
     }
 
-    public int getBici() {
-        return bici;
+    public int getBicicleta() {
+        return bicicleta;
     }
 
-    public void setBici(int bici) {
-        this.bici = bici;
+    public void setBicicleta(int bicicleta) {
+        this.bicicleta = bicicleta;
     }
 }

@@ -36,7 +36,7 @@
                     android:textSize="20sp"
                     android:textColor="#000"
                     android:textStyle="bold"
-                    android:text="Cedula:"/>
+                    android:text="Cédula:"/>
 
                 <TextView
                     android:id="@+id/tvCedula"
@@ -138,7 +138,7 @@
                     android:textSize="20sp"
                     android:textColor="#000"
                     android:textStyle="bold"
-                    android:text="Telefono:"/>
+                    android:text="Teléfono:"/>
 
                 <TextView
                     android:id="@+id/tvTelefono"
@@ -172,7 +172,7 @@
                     android:textSize="20sp"
                     android:textColor="#000"
                     android:textStyle="bold"
-                    android:text="Direccion:"/>
+                    android:text="Dirección:"/>
 
                 <TextView
                     android:id="@+id/tvDireccion"

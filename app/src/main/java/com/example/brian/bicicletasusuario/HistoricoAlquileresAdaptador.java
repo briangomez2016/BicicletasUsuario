@@ -7,10 +7,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.brian.bicicletasusuario.Clases.Alquiler;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -61,14 +63,14 @@ public class HistoricoAlquileresAdaptador extends RecyclerView.Adapter<Historico
             ButterKnife.bind(this, itemView);
             mContext = itemView.getContext();
             cardView = itemView.findViewById(R.id.item_historico_alquileres);
+
         }
 
         public void bindAlquiler(Alquiler alquiler) {
             parada.setText(alquiler.getParada());
-            horaInicio.setText(alquiler.getHoraInicio().toString());
-            horaFin.setText(alquiler.getHoraFin().toString());
-            idBici.setText(String.valueOf(alquiler.getBici()));
-
+            horaInicio.setText(alquiler.getHoraInicio());
+            horaFin.setText(alquiler.getHoraFin());
+            idBici.setText(String.valueOf(alquiler.getBicicleta()));
         }
 
 
