@@ -223,8 +223,10 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="50dp"
+                android:layout_marginLeft="50dp"
+                android:layout_marginRight="50dp"
                 android:layout_marginTop="15dp"
+                android:layout_marginBottom="15dp"
                 android:background="@drawable/fondo_saldo"
                 android:orientation="vertical">
 
@@ -250,27 +252,43 @@
 
                 </Spinner>
 
-                <Button
-                    android:id="@+id/btnComprarCreditos"
+                <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginHorizontal="10dp"
-                    android:background="@drawable/fondo_boton_compra"
-                    android:textColor="@color/colorPrimary"
-                    android:layout_marginBottom="10dp"
-                    android:textStyle="bold"
-                    android:text="Cargar" />
+                    android:layout_height="match_parent">
+
+                    <Button
+                        android:id="@+id/btnComprarCreditos"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:background="@drawable/fondo_boton_compra"
+                        android:text="Cargar"
+                        android:textColor="@color/colorPrimary"
+                        android:textStyle="bold" />
+
+                    <ProgressBar
+                        android:id="@+id/progressBarCargar"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="10dp"
+                        android:visibility="gone"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"/>
+                </FrameLayout>
+
 
                 <Button
                     android:id="@+id/btnEditarPerfil"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_marginBottom="10dp"
                     android:layout_marginHorizontal="10dp"
                     android:background="@drawable/fondo_boton_compra"
+                    android:text="Editar Perfil"
                     android:textColor="@color/colorPrimary"
-                    android:layout_marginBottom="10dp"
-                    android:textStyle="bold"
-                    android:text="Editar Perfil" />
+                    android:textStyle="bold" />
 
             </LinearLayout>
 
