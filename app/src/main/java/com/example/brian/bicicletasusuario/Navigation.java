@@ -12,10 +12,14 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -43,6 +47,8 @@ public class Navigation extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         ButterKnife.bind(this);
+
+		FirebaseMessaging.getInstance().unsubscribeFromTopic("habilitado");
 
         onNavigationItemSelected(navigationView.getMenu().findItem(R.id.pes_perfil));
     }

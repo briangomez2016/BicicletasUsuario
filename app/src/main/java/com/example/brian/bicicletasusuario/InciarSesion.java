@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -86,6 +87,7 @@ public class InciarSesion extends AppCompatActivity {
     private void iniciar(final String email, final String pass, final Boolean recordar) {
         final ApiInterface api = ApiCliente.getClient().create(ApiInterface.class);
         final String idMovil = FirebaseInstanceId.getInstance().getToken();
+        Log.d("IDIDID", idMovil);
         Call<RespuestaUsuario> call = api.iniciar(email, pass, idMovil);
         call.enqueue(new Callback<RespuestaUsuario>() {
             @Override
