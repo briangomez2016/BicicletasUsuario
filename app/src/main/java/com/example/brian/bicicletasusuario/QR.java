@@ -1,46 +1,74 @@
 package com.example.brian.bicicletasusuario;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.support.v7.app.AppCompatActivity;
+import android.os.Build;
 import android.os.Bundle;
-import android.widget.Toast;
+import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
+import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.Spinner;
 
-public class QR extends AppCompatActivity {
+import com.google.zxing.Result;
+
+import butterknife.BindView;
+import me.dm7.barcodescanner.zxing.ZXingScannerView;
+
+public class QR extends AppCompatActivity implements ZXingScannerView.ResultHandler{
+
+	@BindView(R.id.listaHr)
+	Spinner lista;
+
+	private ZXingScannerView scannerView;
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	@RequiresApi(api = Build.VERSION_CODES.M)
+	protected void onCreate(@Nullable Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_qr);
-
-		try {
-
-			Intent intent = new Intent("com.google.zxing.client.android.SCAN");
-			intent.putExtra("SCAN_MODE", "QR_CODE_MODE"); // "PRODUCT_MODE for bar codes
-
-			startActivityForResult(intent, 0);
-
-		} catch (Exception e) {
-
-			Uri marketUri = Uri.parse("market://details?id=com.google.zxing.client.android");
-			Intent marketIntent = new Intent(Intent.ACTION_VIEW,marketUri);
-			startActivity(marketIntent);
+		scannerView = new ZXingScannerView(this);
+		setContentView(scannerView);
+		scannerView.setResultHandler(this);
+		if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+			scannerView.startCamera();
+		} else {
+			requestPermissions(
+					new String[]{
+							Manifest.permission.CAMERA
+					},
+					7368
+			);
 
 		}
+		}
+
+	@Override
+	public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+		if (requestCode == 7368) {
+			if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED ) {
+				return;
+			}
+			scannerView.startCamera();
+		}
+	}
+	@Override
+	protected void onPause() {
+		super.onPause();
+		scannerView.stopCamera();
 	}
 
 	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
-		if (requestCode == 0) {
+	public void handleResult(Result result) {
+		Intent intent = new Intent();
+		intent.setData(Uri.parse(result.getText()));
+		setResult(RESULT_OK,intent);
+		finish();
+		scannerView.resumeCameraPreview(this);
 
-			if (resultCode == RESULT_OK) {
-				String contents = data.getStringExtra("SCAN_RESULT");
-				Toast.makeText(this, contents, Toast.LENGTH_SHORT).show();
-			}
-			if(resultCode == RESULT_CANCELED){
-				Toast.makeText(this, "NOPE", Toast.LENGTH_SHORT).show();
-			}
-		}
 	}
+
 }

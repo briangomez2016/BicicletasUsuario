@@ -10,6 +10,7 @@
     <string name="documento" />
     <string name="img">Foto</string>
     <string name="textview">TextView</string>
+    <string name="alquibici"><u>Alquilar bicicleta</u></string>
     <string name="ok">OK</string>
     <string name="cedula">Cedula</string>
     <string name="usuario">Usuario</string>
@@ -35,4 +36,13 @@
         <item>500</item>
     </string-array>
     <string name="title_activity_qr">QR</string>
+    <string-array name="horas">
+        <item>0 a 15 mins</item>
+        <item>15 a 30 mins</item>
+        <item>1 hora</item>
+        <item>2 horas</item>
+        <item>3 horas</item>
+        <item>4 horas</item>
+        <item>4 a 10 hrs</item>
+    </string-array>
 </resources>

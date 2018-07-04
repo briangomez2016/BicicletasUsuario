@@ -113,6 +113,10 @@ public class Navigation extends AppCompatActivity
                 fragment = new Perfil();
                 fragmentTransaction = true;
                 break;
+            case R.id.pes_alquiactual:
+                fragment = new AlquilarBici();
+                fragmentTransaction = true;
+                break;
             case R.id.pes_vermapa:
                 fragment = new VerMapa();
                 fragmentTransaction = true;
@@ -127,7 +131,7 @@ public class Navigation extends AppCompatActivity
                 et.putString("email", null);
                 et.putString("password", null);
                 et.commit();
-                Intent intent = new Intent(Navigation.this, InciarSesion.class);
+                Intent intent = new Intent(Navigation.this, IniciarSesion.class);
                 startActivity(intent);
                 break;
             case R.id.pes_historial:

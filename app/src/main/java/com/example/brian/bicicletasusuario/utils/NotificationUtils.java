@@ -14,7 +14,8 @@ import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 import android.text.Html;
 
-import com.example.brian.bicicletasusuario.InciarSesion;
+import com.example.brian.bicicletasusuario.AlquilarBici;
+import com.example.brian.bicicletasusuario.IniciarSesion;
 import com.example.brian.bicicletasusuario.Navigation;
 import com.example.brian.bicicletasusuario.R;
 import com.example.brian.bicicletasusuario.RegistroUsuario;
@@ -43,9 +44,10 @@ public class NotificationUtils {
     public NotificationUtils(Context mContext) {
         this.mContext = mContext;
         //Populate activity map
-        activityMap.put("InciarSesion", InciarSesion.class);
+        activityMap.put("InciarSesion", IniciarSesion.class);
         activityMap.put("RegistroUsuario", RegistroUsuario.class);
         activityMap.put("Navigation", Navigation.class);
+        activityMap.put("AlquilarBici", AlquilarBici.class);
     }
 
     /**

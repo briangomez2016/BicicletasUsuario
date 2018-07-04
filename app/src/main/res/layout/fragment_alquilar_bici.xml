@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#f1f1f1"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_marginTop="15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/circle">
+            <Button
+
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/ic_directions_bike_black_24dp"/>
+
+        </LinearLayout>
+        <TextView
+            android:layout_width="240dp"
+            android:layout_height="wrap_content"
+            android:text="@string/alquibici"
+            android:layout_gravity="center"
+            android:textAlignment="center"
+            android:textColor="#000"
+            android:textSize="26dp"
+            android:textStyle="italic|bold"
+
+            />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone"
+            android:layout_marginTop="25dp"
+            >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginRight="30dp"
+                android:text="Tiempo a alquilar:"
+                android:textSize="16dp"
+                android:textColor="#000"
+                android:layout_weight="1"
+                />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/contenedor"
+                >
+                <Spinner
+                    android:id="@+id/listaHr"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:entries="@array/horas"
+
+                    />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="250dp"
+            android:layout_height="78dp"
+            android:layout_marginTop="20dp"
+            android:layout_gravity="center"
+            android:background="@drawable/contenedor"
+            >
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="5dp"
+                android:textStyle="bold"
+                android:textAlignment="center"
+                android:text="Para alquilar un bicicleta se debe introducir el idendtificador de la bicicleta a alquilar o escaneando el codigo QR que esta en la misma."
+                />
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="15dp"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Introducir Identificador"
+                android:layout_gravity="center"
+                android:textColor="#000"
+                android:textStyle="bold|normal"
+                android:textSize="17sp"
+
+                />
+            <EditText
+                android:id="@+id/edId"
+                android:layout_marginTop="10dp"
+                android:layout_width="200dp"
+                android:layout_gravity="center"
+                android:layout_height="wrap_content"
+                android:background="@drawable/contenedor"
+                android:hint="Identificador"
+                android:textAlignment="center"
+
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Escanear QR"
+                android:layout_gravity="center"
+                android:textColor="#000"
+                android:textStyle="bold|normal"
+                android:textSize="17sp"
+                android:layout_marginTop="20dp"
+                />
+
+            <LinearLayout
+                android:layout_width="60dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/contenedorcolor">
+
+                <Button
+                    android:id="@+id/btnScanner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/ic_flip_black_24dp"
+                    android:onClick="scannerQR" />
+            </LinearLayout>
+
+        </LinearLayout>
+        <Button
+            android:id="@+id/btnAlquilar"
+            android:layout_width="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:text="Alquilar"
+            android:layout_height="40dp"
+            android:background="@drawable/boton_registrarse"
+            android:onClick="scannerQR" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tiempo Actual: "
+                android:textSize="20dp"
+                android:textColor="#000"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="5dp"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Costo Actual: "
+                android:textSize="20dp"
+                android:textColor="#000"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="5dp"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tiempo Alquilado: "
+                android:textSize="20dp"
+                android:textColor="#000"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="5dp"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Costo Alquiler: "
+                android:textSize="20dp"
+                android:textColor="#000"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="5dp"
+                />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</FrameLayout>

@@ -88,52 +88,52 @@ public class RegistroUsuario extends AppCompatActivity {
         }
 
         if(password.equals(passconf) && !nom.isEmpty() && !em.isEmpty() && !dir.isEmpty() && !telefono.isEmpty() && !password.isEmpty() && !cedula.isEmpty() ){
-        Call<RespuestaUsuario> call = api.getPerfil(em);
-        call.enqueue(new Callback<RespuestaUsuario>() {
-            @Override
-            public void onResponse(Call<RespuestaUsuario> call, Response<RespuestaUsuario> response) {
-                if (response.body().getUsuario().getEmail()!=null) {
-                    email.setError("Email ya en uso");
-                } else {
-                    if (ci.isChecked()) {
-                        Call<RespuestaUsuario> call2 = api.registrar(cedula, null, nom, em, password, telefono, dir);
-                        call2.enqueue(new Callback<RespuestaUsuario>() {
-                            @Override
-                            public void onResponse(Call<RespuestaUsuario> call2, Response<RespuestaUsuario> response) {
-                                Intent intent = new Intent(RegistroUsuario.this, Navigation.class);
-                                startActivity(intent);
-
-                            }
-
-                            @Override
-                            public void onFailure(Call<RespuestaUsuario> call2, Throwable t) {
-
-                            }
-                        });
+            Call<RespuestaUsuario> call = api.getPerfil(em);
+            call.enqueue(new Callback<RespuestaUsuario>() {
+                @Override
+                public void onResponse(Call<RespuestaUsuario> call, Response<RespuestaUsuario> response) {
+                    if (response.body().getUsuario().getEmail()!=null) {
+                        email.setError("Email ya en uso");
                     } else {
-                        Call<RespuestaUsuario> call2 = api.registrar(null, pasaporte, nom, em, password, telefono, dir);
-                        call2.enqueue(new Callback<RespuestaUsuario>() {
-                            @Override
-                            public void onResponse(Call<RespuestaUsuario> call2, Response<RespuestaUsuario> response) {
-                                Intent intent = new Intent(RegistroUsuario.this, Navigation.class);
-                                startActivity(intent);
-                            }
+                        if (ci.isChecked()) {
+                            Call<RespuestaUsuario> call2 = api.registrar(cedula, null, nom, em, password, telefono, dir);
+                            call2.enqueue(new Callback<RespuestaUsuario>() {
+                                @Override
+                                public void onResponse(Call<RespuestaUsuario> call2, Response<RespuestaUsuario> response) {
+                                    Intent intent = new Intent(RegistroUsuario.this, Navigation.class);
+                                    startActivity(intent);
 
-                            @Override
-                            public void onFailure(Call<RespuestaUsuario> call2, Throwable t) {
+                                }
 
-                            }
-                        });
+                                @Override
+                                public void onFailure(Call<RespuestaUsuario> call2, Throwable t) {
+
+                                }
+                            });
+                        } else {
+                            Call<RespuestaUsuario> call2 = api.registrar(null, pasaporte, nom, em, password, telefono, dir);
+                            call2.enqueue(new Callback<RespuestaUsuario>() {
+                                @Override
+                                public void onResponse(Call<RespuestaUsuario> call2, Response<RespuestaUsuario> response) {
+                                    Intent intent = new Intent(RegistroUsuario.this, IniciarSesion.class);
+                                    startActivity(intent);
+                                }
+
+                                @Override
+                                public void onFailure(Call<RespuestaUsuario> call2, Throwable t) {
+
+                                }
+                            });
+                        }
+
                     }
+                }
+
+                @Override
+                public void onFailure(Call<RespuestaUsuario> call, Throwable t) {
 
                 }
-            }
-
-            @Override
-            public void onFailure(Call<RespuestaUsuario> call, Throwable t) {
-
-            }
-        });
+            });
         }
 
 
@@ -172,7 +172,7 @@ public class RegistroUsuario extends AppCompatActivity {
                     if (pass.getText().toString().equals(passConfir.getText().toString())) {
                         passConfir.setError(null);
                     } else {
-                        passConfir.setError("Contraseña Incorrecta");
+                        passConfir.setError("La contraseña no coincide");
                     }
                 }
             }

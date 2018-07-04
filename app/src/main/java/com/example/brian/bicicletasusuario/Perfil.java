@@ -93,8 +93,6 @@ public class Perfil extends Fragment {
         SharedPreferences pref = this.getActivity().getApplicationContext().getSharedPreferences("usuario",Context.MODE_PRIVATE);
         String email=pref.getString("email", null);
         Toast.makeText(Perfil.this.getContext(),email ,Toast.LENGTH_LONG).show();
-
-
         Call<RespuestaUsuario> call = api.getPerfil(email);
         call.enqueue(new Callback<RespuestaUsuario>() {
             @Override
