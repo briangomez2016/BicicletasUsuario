@@ -24,7 +24,6 @@ public interface ApiInterface {
                                     @Field("telefono") String tel,
                                     @Field("direccion") String dir
     );
-
     @FormUrlEncoded
     @POST("login")
     Call<RespuestaUsuario> iniciar(@Field("email") String email,
@@ -81,4 +80,26 @@ public interface ApiInterface {
             @Field("tiempo") String tiempo
     );
 
+    @GET ("consultaAlquileresActuales")
+    Call<Respuesta> avisarFaltaPoco ();
+
+    @FormUrlEncoded
+    @POST("devolverBici")
+    Call<Respuesta> devolverAlquiler (
+            @Field("bicicleta") String bicicleta,
+            @Field("parada") int parada,
+            @Field("lugar") int lugar
+    );
+
+    @GET ("alquilerActual")
+    Call<RespuestaAlquilerActual> alquilerActual (
+            @Query("email") String email
+    );
+
+    @FormUrlEncoded
+    @POST("editarPerfil")
+    Call<Respuesta> cargarSaldo(
+            @Field("email") String email,
+            @Field("saldo") int saldo
+    );
 }

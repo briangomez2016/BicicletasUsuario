@@ -70,7 +70,7 @@ public class HistoricoAlquileresAdaptador extends RecyclerView.Adapter<Historico
             parada.setText(alquiler.getParada());
             horaInicio.setText(alquiler.getHoraInicio());
             horaFin.setText(alquiler.getHoraFin());
-            idBici.setText(String.valueOf(alquiler.getBici()));
+            idBici.setText(String.valueOf(alquiler.getBicicleta()));
         }
 
 

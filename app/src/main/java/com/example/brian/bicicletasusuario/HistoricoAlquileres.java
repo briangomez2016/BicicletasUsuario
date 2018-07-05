@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -42,6 +43,8 @@ public class HistoricoAlquileres extends Fragment {
     LinearLayout mensaje;
     @BindView(R.id.carga)
     LinearLayout cargando;
+    @BindView(R.id.swiperefresh)
+    SwipeRefreshLayout swipeRefresh;
 
     public HistoricoAlquileres() {
         // Required empty public constructor
@@ -59,6 +62,13 @@ public class HistoricoAlquileres extends Fragment {
         final View view = inflater.inflate(R.layout.fragment_historico_alquileres, container, false);
         ButterKnife.bind(this, view);
         bdCargarAlquileres();
+
+        swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                bdCargarAlquileres();
+            }
+        });
         return view;
     }
 
@@ -90,10 +100,12 @@ public class HistoricoAlquileres extends Fragment {
                     }else {
                         mensaje.setVisibility(View.VISIBLE);
                         cargando.setVisibility(View.GONE);
+                        swipeRefresh.setRefreshing(false);
                     }
                 }else{
                     mensaje.setVisibility(View.VISIBLE);
                     cargando.setVisibility(View.GONE);
+                    swipeRefresh.setRefreshing(false);
                 }
             }
 
@@ -116,7 +128,7 @@ public class HistoricoAlquileres extends Fragment {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.setHasFixedSize(true);
         cargando.setVisibility(View.GONE);
-        //swipeRefresh.setRefreshing(false);
+        swipeRefresh.setRefreshing(false);
     }
 
 }
