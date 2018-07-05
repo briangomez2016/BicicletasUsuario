@@ -48,8 +48,6 @@ public class EditarPerfil extends Fragment {
 	EditText tvCedula;
 	@BindView (R.id.tvNombre)
 	EditText tvNombre;
-	@BindView (R.id.tvCorreo)
-	EditText tvCorreo;
 	@BindView (R.id.tvTelefono)
 	EditText tvTelefono;
 	@BindView (R.id.tvDireccion)
@@ -58,6 +56,8 @@ public class EditarPerfil extends Fragment {
 	EditText tvpass;
 	@BindView (R.id.btnEditar)
 	Button btnEditar;
+	@BindView (R.id.btnCancelar)
+	Button btnCancelar;
 
 	public EditarPerfil() {
 		// Required empty public constructor
@@ -75,15 +75,29 @@ public class EditarPerfil extends Fragment {
 		ButterKnife.bind(this, v);
 		Button btn = (Button) v.findViewById (R.id.btnEditar);
 
+		btnCancelar.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+
+				Fragment fragment = new Perfil ();
+				FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+				fragmentTransaction.replace(R.id.contenido_navigation, fragment);
+				fragmentTransaction.addToBackStack(null);
+				fragmentTransaction.commit();
+			}
+		});
 
 		btn.setOnClickListener (new View.OnClickListener () {
 			@Override
 			public void onClick(View v) {
-				if(tvCedula.getText().equals("") || tvNombre.getText().equals("") || tvCorreo.getText().equals("") || tvTelefono.getText().equals("") || tvDireccion.getText().equals("") || tvpass.getText().equals("")) {
+				if(tvCedula.getText().equals("") || tvNombre.getText().equals("") || tvTelefono.getText().equals("") || tvDireccion.getText().equals("") || tvpass.getText().equals("")) {
 					Toast.makeText(EditarPerfil.this.getContext(), "No se puede dejar espacios en blanco", Toast.LENGTH_SHORT).show();
 				}else {
 					final ApiInterface api = ApiCliente.getClient ().create (ApiInterface.class);
-					Call<RespuestaUsuario> call2 = api.editarPerfil (tvCedula.getText ().toString (), tvNombre.getText ().toString (), tvCorreo.getText ().toString (), tvTelefono.getText ().toString (), tvDireccion.getText ().toString (), tvpass.getText ().toString ());
+
+					SharedPreferences pref = EditarPerfil.this.getActivity().getApplicationContext().getSharedPreferences("usuario", Context.MODE_PRIVATE);
+					String email=pref.getString("email", null);
+					Call<RespuestaUsuario> call2 = api.editarPerfil (tvCedula.getText ().toString (), tvNombre.getText ().toString (), email, tvTelefono.getText ().toString (), tvDireccion.getText ().toString (), tvpass.getText ().toString ());
 					call2.enqueue (new Callback<RespuestaUsuario> () {
 						@Override
 						public void onResponse(Call<RespuestaUsuario> call2, Response<RespuestaUsuario> response) {
@@ -127,7 +141,6 @@ public class EditarPerfil extends Fragment {
 					} else
 						tvCedula.setText(u.getCedula());
 					tvNombre.setText(u.getNombre());
-					tvCorreo.setText(u.getEmail());
 					tvTelefono.setText(u.getTelefono());
 					tvDireccion.setText(u.getDireccion());
 				} else
@@ -145,15 +158,12 @@ public class EditarPerfil extends Fragment {
 		Usuario.editarPerfil(this, ci, nombre, correo, tel, dir, pass);
 	}
 
-
-
 	public boolean editarPerfil(boolean ok){
 		if(ok){
 			cargarPerfil();
 			Toast.makeText(getActivity(), "Perfil editado", Toast.LENGTH_LONG).show();
 			tvCedula.setText("asd");
 			tvNombre.setText("asd");
-			tvCorreo.setText("qwe");
 			tvTelefono.setText("re");
 			tvDireccion.setText("asd");
 		}else{
@@ -162,6 +172,4 @@ public class EditarPerfil extends Fragment {
 
 		return ok;
 	}
-
-
 }

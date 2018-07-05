@@ -20,56 +20,54 @@
 
         <EditText
             android:id="@+id/nombre"
-            android:paddingLeft="10dp"
             android:layout_width="wrap_content"
             android:layout_height="39dp"
             android:layout_marginTop="20dp"
+            android:backgroundTint="#ffd70d"
             android:ems="10"
-            android:hint="@string/nombre"
             android:gravity="center"
+            android:hint="@string/nombre"
             android:inputType="textPersonName"
+            android:paddingLeft="10dp"
+            android:paddingStart="10dp"
             android:textColorHint="#fff"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.502"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" android:paddingStart="10dp"
-            android:backgroundTint="#ffd70d"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
             android:id="@+id/pass"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="60dp"
+            android:backgroundTint="#ffd70d"
             android:ems="10"
+            android:gravity="center"
             android:hint="@string/pass"
             android:inputType="textPassword"
-            android:gravity="center"
             android:textColorHint="#fff"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.502"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:backgroundTint="#ffd70d"
-            />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
             android:id="@+id/passConfir"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="100dp"
+            android:backgroundTint="#ffd70d"
             android:ems="10"
-            android:inputType="textPassword"
             android:gravity="center"
             android:hint="@string/confir"
 
+            android:inputType="textPassword"
             android:textColorHint="#fff"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.502"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:backgroundTint="#ffd70d"
-            />
-
+            app:layout_constraintTop_toTopOf="parent" />
 
 
         <EditText
@@ -77,31 +75,31 @@
             android:layout_width="wrap_content"
             android:layout_height="39dp"
             android:layout_marginTop="150dp"
+            android:backgroundTint="#ffd70d"
             android:ems="10"
-            android:hint="@string/email"
             android:gravity="center"
+            android:hint="@string/email"
             android:inputType="textEmailAddress"
             android:textColorHint="#fff"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.502"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:backgroundTint="#ffd70d"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
             android:id="@+id/telefono"
             android:layout_width="217dp"
             android:layout_height="43dp"
             android:layout_marginTop="190dp"
+            android:backgroundTint="#ffd70d"
             android:ems="10"
-            android:hint="@string/telefono"
             android:gravity="center"
-            android:textColorHint="#fff"
+            android:hint="@string/telefono"
             android:inputType="phone"
+            android:textColorHint="#fff"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:backgroundTint="#ffd70d"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
 
         <RadioGroup
@@ -141,45 +139,66 @@
             android:layout_height="42dp"
             android:layout_marginBottom="8dp"
             android:layout_marginTop="275dp"
+            android:backgroundTint="#ffd70d"
             android:ems="10"
             android:hint="@string/cedula"
             android:inputType="number"
-            android:textColorHint="#fff"
             android:maxLength="8"
+            android:textColorHint="#fff"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:backgroundTint="#ffd70d"/>
+            app:layout_constraintTop_toTopOf="parent" />
+
         <EditText
             android:id="@+id/direccion"
             android:layout_width="wrap_content"
             android:layout_height="42dp"
             android:layout_marginBottom="8dp"
             android:layout_marginTop="325dp"
+            android:backgroundTint="#ffd70d"
             android:ems="10"
             android:hint="@string/direccion"
             android:inputType="textPersonName"
             android:textColorHint="#fff"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:backgroundTint="#ffd70d"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
-</android.support.constraint.ConstraintLayout>
-    <Button
-        android:onClick="Registrarse"
-        android:layout_width="wrap_content"
+    </android.support.constraint.ConstraintLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginTop="8dp"
-        android:background="@color/colorPrimary"
-        android:text="@string/ok"
-        android:textColor="#fff"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0"
+        app:layout_constraintVertical_bias=".96">
 
-        />
+        <Button
+            android:id="@+id/btnRegistrarse"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/fondo_primary_round"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+            android:onClick="Registrarse"
+            android:text="@string/ok"
+            android:visibility="visible"
+            android:textColor="#fff" />
+
+        <ProgressBar
+            android:id="@+id/pbRegistrarse"
+            style="@style/progressBarIS"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+            android:background="@drawable/fondo_primary_round"
+            android:visibility="gone" />
+    </LinearLayout>
 </android.support.constraint.ConstraintLayout>

@@ -13,7 +13,9 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -53,8 +55,13 @@ public class RegistroUsuario extends AppCompatActivity {
     EditText direccion;
     @BindView(R.id.group)
     RadioGroup radio;
+    @BindView(R.id.btnRegistrarse)
+    Button btnRegistrarse;
+    @BindView(R.id.pbRegistrarse)
+    ProgressBar pbRegistrarse;
 
     public void Registrarse(View v) {
+
         final ApiInterface api = ApiCliente.getClient().create(ApiInterface.class);
         final String nom = nombre.getText().toString();
         final String em = email.getText().toString();
@@ -87,26 +94,33 @@ public class RegistroUsuario extends AppCompatActivity {
             documento.setError("Se debe ingresar algo");
         }
 
-        if(password.equals(passconf) && !nom.isEmpty() && !em.isEmpty() && !dir.isEmpty() && !telefono.isEmpty() && !password.isEmpty() && !cedula.isEmpty() ){
+        if (password.equals(passconf) && !nom.isEmpty() && !em.isEmpty() && !dir.isEmpty() && !telefono.isEmpty() && !password.isEmpty() && !cedula.isEmpty()) {
+            btnRegistrarse.setVisibility(View.GONE);
+            pbRegistrarse.setVisibility(View.VISIBLE);
             Call<RespuestaUsuario> call = api.getPerfil(em);
             call.enqueue(new Callback<RespuestaUsuario>() {
                 @Override
                 public void onResponse(Call<RespuestaUsuario> call, Response<RespuestaUsuario> response) {
-                    if (response.body().getUsuario().getEmail()!=null) {
+                    if (response.body().getUsuario().getEmail() != null) {
                         email.setError("Email ya en uso");
+                        btnRegistrarse.setVisibility(View.VISIBLE);
+                        pbRegistrarse.setVisibility(View.GONE);
                     } else {
                         if (ci.isChecked()) {
                             Call<RespuestaUsuario> call2 = api.registrar(cedula, null, nom, em, password, telefono, dir);
                             call2.enqueue(new Callback<RespuestaUsuario>() {
                                 @Override
                                 public void onResponse(Call<RespuestaUsuario> call2, Response<RespuestaUsuario> response) {
-                                    Intent intent = new Intent(RegistroUsuario.this, IniciarSesion.class);
+                                    Intent intent = new Intent(RegistroUsuario.this, Navigation.class);
                                     startActivity(intent);
+
                                 }
 
                                 @Override
                                 public void onFailure(Call<RespuestaUsuario> call2, Throwable t) {
-
+                                    btnRegistrarse.setVisibility(View.VISIBLE);
+                                    pbRegistrarse.setVisibility(View.GONE);
+                                    Toast.makeText(RegistroUsuario.this, "Error de conexión con el servidor", Toast.LENGTH_SHORT);
                                 }
                             });
                         } else {
@@ -114,23 +128,27 @@ public class RegistroUsuario extends AppCompatActivity {
                             call2.enqueue(new Callback<RespuestaUsuario>() {
                                 @Override
                                 public void onResponse(Call<RespuestaUsuario> call2, Response<RespuestaUsuario> response) {
-                                    Intent intent = new Intent(RegistroUsuario.this, IniciarSesion.class);
+                                    Intent intent = new Intent(RegistroUsuario.this, Navigation.class);
                                     startActivity(intent);
                                 }
 
                                 @Override
                                 public void onFailure(Call<RespuestaUsuario> call2, Throwable t) {
-
+                                    btnRegistrarse.setVisibility(View.VISIBLE);
+                                    pbRegistrarse.setVisibility(View.GONE);
+                                    Toast.makeText(RegistroUsuario.this, "Error de conexión con el servidor", Toast.LENGTH_SHORT);
                                 }
                             });
                         }
 
-                    }
                 }
+            }
 
                 @Override
                 public void onFailure(Call<RespuestaUsuario> call, Throwable t) {
-
+                    btnRegistrarse.setVisibility(View.VISIBLE);
+                    pbRegistrarse.setVisibility(View.GONE);
+                    Toast.makeText(RegistroUsuario.this, "Error de conexión con el servidor", Toast.LENGTH_SHORT);
                 }
             });
         }
@@ -171,7 +189,7 @@ public class RegistroUsuario extends AppCompatActivity {
                     if (pass.getText().toString().equals(passConfir.getText().toString())) {
                         passConfir.setError(null);
                     } else {
-                        passConfir.setError("La contraseña no coincide");
+                        passConfir.setError("Contraseña Incorrecta");
                     }
                 }
             }
