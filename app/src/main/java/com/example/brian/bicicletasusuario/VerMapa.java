@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
@@ -21,6 +22,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -28,13 +31,17 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.brian.bicicletasusuario.ApiCliente.ApiCliente;
 import com.example.brian.bicicletasusuario.ApiInterface.ApiInterface;
 import com.example.brian.bicicletasusuario.ApiInterface.Respuesta;
 import com.example.brian.bicicletasusuario.ApiInterface.RespuestaAlquilerActual;
+import com.example.brian.bicicletasusuario.ApiInterface.RespuestaLugares;
 import com.example.brian.bicicletasusuario.ApiInterface.RespuestaParadas;
+import com.example.brian.bicicletasusuario.Clases.Lugar;
 import com.example.brian.bicicletasusuario.Clases.Parada;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -84,6 +91,8 @@ public class VerMapa extends Fragment implements OnMapReadyCallback, GoogleMap.O
 	EditText etQRDevolver;
 	@BindView (R.id.progressBarDevolver)
 	ProgressBar progressBarDevolver;
+	@BindView (R.id.spinnerLugares)
+	Spinner spinnerTipo;
 
 	private List<Marker> paradas;
 
@@ -94,6 +103,8 @@ public class VerMapa extends Fragment implements OnMapReadyCallback, GoogleMap.O
 	public void onCreate(@Nullable Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 	}
+
+	String lugarSeleccionado;
 
 	@Nullable
 	@Override
@@ -141,8 +152,62 @@ public class VerMapa extends Fragment implements OnMapReadyCallback, GoogleMap.O
 					Toast.makeText(VerMapa.this.getContext(), "Parada llena, no se puede devolver una bici", Toast.LENGTH_SHORT).show();
 					return;
 				} else {
-					llOpciones.setVisibility(View.GONE);
-					llPanelDevolver.setVisibility(View.VISIBLE);
+					final ApiInterface api = ApiCliente.getClient().create(ApiInterface.class);
+					Call<RespuestaLugares> call = api.obtenerLugares(2);
+					call.enqueue(new Callback<RespuestaLugares>() {
+						@Override
+						public void onResponse(Call<RespuestaLugares> call, Response<RespuestaLugares> response) {
+							if (response.body().getCodigo().equals("1")) {
+								List<String> items = new ArrayList<>();
+								items.add("Lugares");
+								for (Lugar l : response.body().getLugares()) {
+									items.add(l.getLugar() + "");
+								}
+
+								ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, items) {
+									@Override
+									public View getDropDownView(int position, View convertView, ViewGroup parent) {
+										View view = super.getDropDownView(position, convertView, parent);
+										TextView tv = (TextView) view;
+										if (position == 0) {
+											tv.setTextColor(Color.GRAY);
+										} else {
+											tv.setTextColor(Color.BLACK);
+										}
+										return view;
+									}
+								};
+
+								spinnerTipo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+									public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+										//Poner el primer valor en color gris
+										if (position == 0) {
+											TextView textView = (TextView) parent.getChildAt(position);
+											textView.setTextColor(getResources().getColor(R.color.hintReportarIncidencia));
+											lugarSeleccionado = null;
+										} else {
+											lugarSeleccionado = parent.getItemAtPosition(position).toString();
+										}
+
+									}
+
+									public void onNothingSelected(AdapterView<?> parent) {
+									}
+								});
+
+								spinnerTipo.setAdapter(adapter);
+
+								llOpciones.setVisibility(View.GONE);
+								llPanelDevolver.setVisibility(View.VISIBLE);
+							} else
+								Toast.makeText(VerMapa.this.getActivity(), "No se pudo conectar con el servidor", Toast.LENGTH_SHORT).show();
+						}
+
+						@Override
+						public void onFailure(Call<RespuestaLugares> call, Throwable t) {
+							Toast.makeText(VerMapa.this.getActivity(), "Error al conectarse con el servidor", Toast.LENGTH_SHORT).show();
+						}
+					});
 				}
 			}
 		});
@@ -169,11 +234,20 @@ public class VerMapa extends Fragment implements OnMapReadyCallback, GoogleMap.O
 					llPanelDevolver.setVisibility(View.GONE);
 					return;
 				} else {
+					if (etQRDevolver.getText().toString() == null || etQRDevolver.getText().toString().isEmpty()) {
+						Toast.makeText(VerMapa.this.getContext(), "Ingrese el codigo de la bicicleta", Toast.LENGTH_SHORT).show();
+						return;
+					}
+					if (lugarSeleccionado == null || lugarSeleccionado.isEmpty()) {
+						Toast.makeText(VerMapa.this.getContext(), "Seleccione un lugar en la parada", Toast.LENGTH_SHORT).show();
+						return;
+					}
+
 					btnConfirmarDevolver.setVisibility(View.GONE);
 					progressBarDevolver.setVisibility(View.VISIBLE);
 
 					ApiInterface api = ApiCliente.getClient().create(ApiInterface.class);
-					Call<Respuesta> call = api.devolverAlquiler(etQRDevolver.getText().toString(), paradaSeleccionada.getId(), 2);
+					Call<Respuesta> call = api.devolverAlquiler(etQRDevolver.getText().toString(), paradaSeleccionada.getId(), Integer.valueOf(lugarSeleccionado));
 					call.enqueue(new Callback<Respuesta>() {
 						@Override
 						public void onResponse(Call<Respuesta> call, Response<Respuesta> response) {

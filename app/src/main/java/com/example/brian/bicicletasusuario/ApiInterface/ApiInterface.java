@@ -84,4 +84,9 @@ public interface ApiInterface {
             @Field("email") String email,
             @Field("saldo") int saldo
     );
+
+    @GET ("lugaresDesocupados")
+    Call<RespuestaLugares> obtenerLugares (
+            @Query ("parada") int parada
+    );
 }

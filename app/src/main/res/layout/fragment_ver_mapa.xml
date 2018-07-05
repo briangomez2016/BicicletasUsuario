@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout android:layout_width="match_parent"
+<FrameLayout xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
@@ -30,7 +31,8 @@
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:background="#00F"
-                android:layout_marginRight="5dp"/>
+                android:layout_marginRight="5dp"
+                android:layout_marginEnd="5dp" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -46,7 +48,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginVertical="5dp">
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp">
 
             <ImageView
                 android:layout_width="25dp"
@@ -66,13 +69,15 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            tools:ignore="UseCompoundDrawables">
 
             <ImageView
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:background="#F00"
-                android:layout_marginRight="5dp"/>
+                android:layout_marginRight="5dp"
+                android:layout_marginEnd="5dp" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -99,7 +104,7 @@
             android:checked="true"
             android:background="@drawable/fondo_edit"
             android:padding="10dp"
-            android:textSize="25dp"
+            android:textSize="25sp"
             android:text="Mostrar vacías"/>
 
     </LinearLayout>
@@ -109,8 +114,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:layout_marginVertical="10dp"
-        android:layout_marginHorizontal="10dp"
+        android:layout_margin="10dp"
         android:visibility="gone"
         android:orientation="vertical"
         android:background="@drawable/fondo_primary_round">
@@ -145,8 +149,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:layout_marginVertical="10dp"
-        android:layout_marginHorizontal="10dp"
+        android:layout_margin="10dp"
         android:visibility="gone"
         android:orientation="vertical"
         android:background="@drawable/fondo_primary_round">
@@ -172,16 +175,18 @@
                 android:id="@+id/etQRDevolver"
                 android:layout_weight="1"
                 android:textAlignment="center"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:hint="Código Bicicleta"
                 android:layout_height="40dp"
-                android:background="@drawable/fondo_edit"/>
+                android:background="@drawable/fondo_edit"
+                android:inputType="number" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
-                android:background="@drawable/fondo_blanco_round">
+                android:background="@drawable/fondo_blanco_round"
+                android:layout_marginStart="10dp">
 
                 <Button
                     android:id="@+id/btnQRDevolver"
@@ -196,7 +201,27 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/fondo_blanco_round" />
+
+            <Spinner
+                android:id="@+id/spinnerLugares"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:layout_marginBottom="10dp">
 
             <Button
