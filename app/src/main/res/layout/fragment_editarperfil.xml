@@ -9,7 +9,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
             android:orientation="vertical">
 
             <ImageView
@@ -17,13 +17,16 @@
                 android:layout_width="160dp"
                 android:layout_height="160dp"
                 android:background="@drawable/ic_user_def"
-                android:layout_marginVertical="10px"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
                 android:layout_gravity="center"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_marginHorizontal="30dp"
-                android:layout_marginVertical="5dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
@@ -53,12 +56,15 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="1px"
-                android:layout_marginHorizontal="30dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
                 android:background="@drawable/linea_entre_medio"/>
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_marginHorizontal="30dp"
-                android:layout_marginVertical="5dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
@@ -87,46 +93,15 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="1px"
-                android:layout_marginHorizontal="30dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
                 android:background="@drawable/linea_entre_medio"/>
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_marginHorizontal="30dp"
-                android:layout_marginVertical="5dp"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_weight="2"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:textAlignment="center"
-                    android:textSize="20sp"
-                    android:textColor="#000"
-                    android:textStyle="bold"
-                    android:text="Correo:"/>
-
-                <EditText
-                    android:id="@+id/tvCorreo"
-                    android:layout_weight="1"
-                    android:layout_width="match_parent"
-                    android:textAlignment="center"
-                    android:textSize="20sp"
-                    android:textColor="#000"
-                    android:layout_height="match_parent"
-                    android:text=""/>
-
-            </LinearLayout>
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="1px"
-                android:layout_marginHorizontal="30dp"
-                android:background="@drawable/linea_entre_medio"/>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_marginHorizontal="30dp"
-                android:layout_marginVertical="5dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
@@ -155,12 +130,15 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="1px"
-                android:layout_marginHorizontal="30dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
                 android:background="@drawable/linea_entre_medio"/>
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_marginHorizontal="30dp"
-                android:layout_marginVertical="5dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
@@ -189,12 +167,15 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="1px"
-                android:layout_marginHorizontal="30dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
                 android:background="@drawable/linea_entre_medio"/>
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_marginHorizontal="30dp"
-                android:layout_marginVertical="5dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
@@ -220,29 +201,39 @@
 
             </LinearLayout>
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="1px"
-                android:layout_marginHorizontal="30dp"
-                android:background="@drawable/linea_entre_medio"/>
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_marginHorizontal="30dp"
-                android:layout_marginVertical="5dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:gravity="center">
+
+                <Button
+                    android:id="@+id/btnCancelar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="20dp"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@drawable/fondo_primary_round"
+                    android:textColor="@color/white"
+                    android:text="Cancelar"
+                    android:layout_marginEnd="20dp" />
+
+                <Button
+                    android:id="@+id/btnEditar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@drawable/fondo_primary_round"
+                    android:textColor="@color/white"
+                    android:layout_marginLeft="20dp"
+                    android:text="Aceptar"
+                    android:layout_marginStart="20dp" />
 
             </LinearLayout>
-
-            <Button
-                android:id="@+id/btnEditar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:background="@drawable/fondo_primary_round"
-                android:textColor="@color/white"
-                android:layout_below="@+id/pass"
-                android:text="Aceptar" />
 
         </LinearLayout>
 

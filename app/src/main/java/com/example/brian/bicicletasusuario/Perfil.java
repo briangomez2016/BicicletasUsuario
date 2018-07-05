@@ -128,7 +128,7 @@ public class Perfil extends Fragment {
             @Override
             public void onFailure(Call<RespuestaUsuario> call, Throwable t) {
                 Log.d ("ASD", t.getMessage());
-                Toast.makeText(Perfil.this.getContext(), "No se pudo cargar el perfil", Toast.LENGTH_SHORT).show();
+                Toast.makeText(Perfil.this.getActivity(), "No se pudo cargar el perfil", Toast.LENGTH_SHORT).show();
             }
         });
 
