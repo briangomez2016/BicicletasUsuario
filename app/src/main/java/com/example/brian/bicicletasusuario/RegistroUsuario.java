@@ -13,7 +13,9 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -53,8 +55,13 @@ public class RegistroUsuario extends AppCompatActivity {
     EditText direccion;
     @BindView(R.id.group)
     RadioGroup radio;
+    @BindView(R.id.btnRegistrarse)
+    Button btnRegistrarse;
+    @BindView(R.id.pbRegistrarse)
+    ProgressBar pbRegistrarse;
 
     public void Registrarse(View v) {
+
         final ApiInterface api = ApiCliente.getClient().create(ApiInterface.class);
         final String nom = nombre.getText().toString();
         final String em = email.getText().toString();
@@ -65,75 +72,85 @@ public class RegistroUsuario extends AppCompatActivity {
         final String cedula = documento.getText().toString();
         final String pasaporte = documento.getText().toString();
         final String passconf = passConfir.getText().toString();
-        if(nom.isEmpty()){
+        if (nom.isEmpty()) {
             nombre.setError("Se debe ingresar un nombre");
         }
-        if(em.isEmpty()){
+        if (em.isEmpty()) {
             email.setError("Se debe ingresar un email");
         }
-        if(telefono.isEmpty()){
+        if (telefono.isEmpty()) {
             tel.setError("Se debe ingresar un nombre");
         }
-        if(password.isEmpty()){
+        if (password.isEmpty()) {
             pass.setError("Se debe ingresar un contraseña");
         }
-        if(passconf.isEmpty()){
+        if (passconf.isEmpty()) {
             passConfir.setError("Se debe confirmar la contraseña");
         }
-        if(dir.isEmpty()){
+        if (dir.isEmpty()) {
             direccion.setError("Se debe confirmar la contraseña");
         }
-        if(cedula.isEmpty() || pasaporte.isEmpty()){
+        if (cedula.isEmpty() || pasaporte.isEmpty()) {
             documento.setError("Se debe ingresar algo");
         }
 
-        if(password.equals(passconf) && !nom.isEmpty() && !em.isEmpty() && !dir.isEmpty() && !telefono.isEmpty() && !password.isEmpty() && !cedula.isEmpty() ){
-        Call<RespuestaUsuario> call = api.getPerfil(em);
-        call.enqueue(new Callback<RespuestaUsuario>() {
-            @Override
-            public void onResponse(Call<RespuestaUsuario> call, Response<RespuestaUsuario> response) {
-                if (response.body().getUsuario().getEmail()!=null) {
-                    email.setError("Email ya en uso");
-                } else {
-                    if (ci.isChecked()) {
-                        Call<RespuestaUsuario> call2 = api.registrar(cedula, null, nom, em, password, telefono, dir);
-                        call2.enqueue(new Callback<RespuestaUsuario>() {
-                            @Override
-                            public void onResponse(Call<RespuestaUsuario> call2, Response<RespuestaUsuario> response) {
-                                Intent intent = new Intent(RegistroUsuario.this, Navigation.class);
-                                startActivity(intent);
-
-                            }
-
-                            @Override
-                            public void onFailure(Call<RespuestaUsuario> call2, Throwable t) {
-
-                            }
-                        });
+        if (password.equals(passconf) && !nom.isEmpty() && !em.isEmpty() && !dir.isEmpty() && !telefono.isEmpty() && !password.isEmpty() && !cedula.isEmpty()) {
+            btnRegistrarse.setVisibility(View.GONE);
+            pbRegistrarse.setVisibility(View.VISIBLE);
+            Call<RespuestaUsuario> call = api.getPerfil(em);
+            call.enqueue(new Callback<RespuestaUsuario>() {
+                @Override
+                public void onResponse(Call<RespuestaUsuario> call, Response<RespuestaUsuario> response) {
+                    if (response.body().getUsuario().getEmail() != null) {
+                        email.setError("Email ya en uso");
+                        btnRegistrarse.setVisibility(View.VISIBLE);
+                        pbRegistrarse.setVisibility(View.GONE);
                     } else {
-                        Call<RespuestaUsuario> call2 = api.registrar(null, pasaporte, nom, em, password, telefono, dir);
-                        call2.enqueue(new Callback<RespuestaUsuario>() {
-                            @Override
-                            public void onResponse(Call<RespuestaUsuario> call2, Response<RespuestaUsuario> response) {
-                                Intent intent = new Intent(RegistroUsuario.this, Navigation.class);
-                                startActivity(intent);
-                            }
+                        if (ci.isChecked()) {
+                            Call<RespuestaUsuario> call2 = api.registrar(cedula, null, nom, em, password, telefono, dir);
+                            call2.enqueue(new Callback<RespuestaUsuario>() {
+                                @Override
+                                public void onResponse(Call<RespuestaUsuario> call2, Response<RespuestaUsuario> response) {
+                                    Intent intent = new Intent(RegistroUsuario.this, Navigation.class);
+                                    startActivity(intent);
 
-                            @Override
-                            public void onFailure(Call<RespuestaUsuario> call2, Throwable t) {
+                                }
 
-                            }
-                        });
+                                @Override
+                                public void onFailure(Call<RespuestaUsuario> call2, Throwable t) {
+                                    btnRegistrarse.setVisibility(View.VISIBLE);
+                                    pbRegistrarse.setVisibility(View.GONE);
+                                    Toast.makeText(RegistroUsuario.this, "Error de conexión con el servidor", Toast.LENGTH_SHORT);
+                                }
+                            });
+                        } else {
+                            Call<RespuestaUsuario> call2 = api.registrar(null, pasaporte, nom, em, password, telefono, dir);
+                            call2.enqueue(new Callback<RespuestaUsuario>() {
+                                @Override
+                                public void onResponse(Call<RespuestaUsuario> call2, Response<RespuestaUsuario> response) {
+                                    Intent intent = new Intent(RegistroUsuario.this, Navigation.class);
+                                    startActivity(intent);
+                                }
+
+                                @Override
+                                public void onFailure(Call<RespuestaUsuario> call2, Throwable t) {
+                                    btnRegistrarse.setVisibility(View.VISIBLE);
+                                    pbRegistrarse.setVisibility(View.GONE);
+                                    Toast.makeText(RegistroUsuario.this, "Error de conexión con el servidor", Toast.LENGTH_SHORT);
+                                }
+                            });
+                        }
+
                     }
-
                 }
-            }
 
-            @Override
-            public void onFailure(Call<RespuestaUsuario> call, Throwable t) {
-
-            }
-        });
+                @Override
+                public void onFailure(Call<RespuestaUsuario> call, Throwable t) {
+                    btnRegistrarse.setVisibility(View.VISIBLE);
+                    pbRegistrarse.setVisibility(View.GONE);
+                    Toast.makeText(RegistroUsuario.this, "Error de conexión con el servidor", Toast.LENGTH_SHORT);
+                }
+            });
         }
 
 
@@ -166,6 +183,7 @@ public class RegistroUsuario extends AppCompatActivity {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
+
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.length() != 0) {
@@ -176,6 +194,7 @@ public class RegistroUsuario extends AppCompatActivity {
                     }
                 }
             }
+
             @Override
             public void afterTextChanged(Editable s) {
 
