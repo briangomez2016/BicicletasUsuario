@@ -100,9 +100,8 @@ public class RegistroUsuario extends AppCompatActivity {
                             call2.enqueue(new Callback<RespuestaUsuario>() {
                                 @Override
                                 public void onResponse(Call<RespuestaUsuario> call2, Response<RespuestaUsuario> response) {
-                                    Intent intent = new Intent(RegistroUsuario.this, Navigation.class);
+                                    Intent intent = new Intent(RegistroUsuario.this, IniciarSesion.class);
                                     startActivity(intent);
-
                                 }
 
                                 @Override

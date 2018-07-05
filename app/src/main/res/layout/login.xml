@@ -61,6 +61,15 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             android:text="@string/recordarme"/>
+        <TextView
+            android:id="@+id/olvido"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/olvidopass"
+            android:textColor="#1b76ff"
+            android:layout_marginTop="13dp"
+            android:onClick="OlvidoPass"
+            />
 
     </LinearLayout>
 

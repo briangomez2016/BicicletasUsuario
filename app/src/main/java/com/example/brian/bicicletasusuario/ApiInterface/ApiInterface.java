@@ -17,17 +17,18 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST("registrarse")
     Call<RespuestaUsuario> registrar(@Field("ci") String ci,
-                                    @Field("pasaporte") String pasaporte,
-                                    @Field("nombre") String nombre,
-                                    @Field("email") String email,
-                                    @Field("pass") String pass,
-                                    @Field("telefono") String tel,
-                                    @Field("direccion") String dir
+                                     @Field("pasaporte") String pasaporte,
+                                     @Field("nombre") String nombre,
+                                     @Field("email") String email,
+                                     @Field("pass") String pass,
+                                     @Field("telefono") String tel,
+                                     @Field("direccion") String dir
     );
+
     @FormUrlEncoded
     @POST("login")
     Call<RespuestaUsuario> iniciar(@Field("email") String email,
-                                    @Field("password") String pass,
+                                   @Field("password") String pass,
                                    @Field("uid") String idMovil
     );
 
@@ -35,10 +36,12 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST("reportarIncidencia")
     Call<RespuestaIncidencia> reportarIncidencia(@Field("usr") String usr,
-                                          @Field("parada") String parada,
-                                          @Field("estado") String estado,
-                                          @Field("admin") String admin,
-                                          @Field("comentario") String comentario);
+                                                 @Field("parada") String parada,
+                                                 @Field("estado") String estado,
+                                                 @Field("admin") String admin,
+                                                 @Field("comentario") String comentario,
+                                                 @Field("tipo") String tipo);
+
 
     @GET("paradas")
     Call<RespuestaParadas> getParadas();
@@ -80,19 +83,19 @@ public interface ApiInterface {
             @Field("tiempo") String tiempo
     );
 
-    @GET ("consultaAlquileresActuales")
-    Call<Respuesta> avisarFaltaPoco ();
+    @GET("consultaAlquileresActuales")
+    Call<Respuesta> avisarFaltaPoco();
 
     @FormUrlEncoded
     @POST("devolverBici")
-    Call<Respuesta> devolverAlquiler (
+    Call<Respuesta> devolverAlquiler(
             @Field("bicicleta") String bicicleta,
             @Field("parada") int parada,
             @Field("lugar") int lugar
     );
 
-    @GET ("alquilerActual")
-    Call<RespuestaAlquilerActual> alquilerActual (
+    @GET("alquilerActual")
+    Call<RespuestaAlquilerActual> alquilerActual(
             @Query("email") String email
     );
 

@@ -59,12 +59,12 @@ public class IniciarSesion extends AppCompatActivity {
                 String e = email.getText().toString();
                 String p =pass.getText().toString();
                 if(e.isEmpty() ){
-                    Toast.makeText(IniciarSesion.this, "vacio", Toast.LENGTH_SHORT).show();
                     usuarioError.setError("Debe Ingresar Un Correo Valido");}
                 if(p.isEmpty())
                 {passError.setError("Debe Ingresar Su Contraseña");
                 }
                 if(!p.isEmpty() && !e.isEmpty()){
+
                     if(recordar.isChecked()){
                         iniciar(e,p,true);
                     }else{iniciar(e,p,false);}
@@ -84,7 +84,6 @@ public class IniciarSesion extends AppCompatActivity {
     private void iniciar(final String email, final String pass, final Boolean recordar){
         final ApiInterface api = ApiCliente.getClient().create(ApiInterface.class);
         final String idMovil = FirebaseInstanceId.getInstance().getToken();
-        Toast.makeText(IniciarSesion.this, idMovil, Toast.LENGTH_SHORT).show();
         Call<RespuestaUsuario> call = api.iniciar(email,pass,idMovil);
         call.enqueue(new Callback<RespuestaUsuario>() {
             @Override
