@@ -20,12 +20,14 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.brian.bicicletasusuario.ApiCliente.ApiCliente;
 import com.example.brian.bicicletasusuario.ApiInterface.ApiInterface;
+import com.example.brian.bicicletasusuario.ApiInterface.Respuesta;
 import com.example.brian.bicicletasusuario.ApiInterface.RespuestaUsuario;
 import com.example.brian.bicicletasusuario.Clases.Usuario;
 
@@ -66,6 +68,8 @@ public class Perfil extends Fragment {
     Button btnComprar;
     @BindView (R.id.btnEditarPerfil)
     Button btnEditarPerfil;
+    @BindView (R.id.progressBarCargar)
+	ProgressBar progressBarCargar;
 
     public Perfil() {
     }
@@ -92,8 +96,6 @@ public class Perfil extends Fragment {
 
         SharedPreferences pref = this.getActivity().getApplicationContext().getSharedPreferences("usuario",Context.MODE_PRIVATE);
         String email=pref.getString("email", null);
-        Toast.makeText(Perfil.this.getContext(),email ,Toast.LENGTH_LONG).show();
-
 
         Call<RespuestaUsuario> call = api.getPerfil(email);
         call.enqueue(new Callback<RespuestaUsuario>() {
@@ -131,10 +133,36 @@ public class Perfil extends Fragment {
         btnComprar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                System.out.println("Masterpiece");
                 String cantidad = spPrecios.getSelectedItem().toString();
                 if (cantidad != null && !cantidad.isEmpty()) {
-                    // TODO: Editar perfil con nuevo saldo...
+                	btnComprar.setVisibility(View.GONE);
+					progressBarCargar.setVisibility(View.VISIBLE);
+                    int saldo = Integer.valueOf(tvSaldo.getText().toString().replace("Saldo: $ ", ""));
+                    int cant = Integer.valueOf(cantidad);
+                    final int saldoNuevo = saldo + cant;
+                    ApiInterface api = ApiCliente.getClient().create(ApiInterface.class);
+                    Call<Respuesta> call = api.cargarSaldo(tvCorreo.getText().toString(), saldoNuevo);
+                    call.enqueue(new Callback<Respuesta>() {
+                        @Override
+                        public void onResponse(Call<Respuesta> call, Response<Respuesta> response) {
+                            if (response.body().getCodigo().equals("1")) {
+                                tvSaldo.setText("Saldo: $ " + saldoNuevo);
+								Toast.makeText(Perfil.this.getContext(), "Saldo cargado!", Toast.LENGTH_SHORT).show();
+                            } else
+                                Toast.makeText(Perfil.this.getContext(), "No se pudo cargar el saldo", Toast.LENGTH_SHORT).show();
+
+							btnComprar.setVisibility(View.VISIBLE);
+							progressBarCargar.setVisibility(View.GONE);
+                        }
+
+                        @Override
+                        public void onFailure(Call<Respuesta> call, Throwable t) {
+                            Toast.makeText(Perfil.this.getContext(), "No se pudo conectar con el servidor", Toast.LENGTH_SHORT).show();
+
+							btnComprar.setVisibility(View.VISIBLE);
+							progressBarCargar.setVisibility(View.GONE);
+                        }
+                    });
                 } else
                     Toast.makeText(Perfil.this.getContext(), "No se pudo realizar la compra", Toast.LENGTH_SHORT).show();
             }

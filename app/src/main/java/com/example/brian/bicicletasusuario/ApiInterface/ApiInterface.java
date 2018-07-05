@@ -77,4 +77,11 @@ public interface ApiInterface {
     Call<RespuestaAlquilerActual> alquilerActual (
             @Query("email") String email
     );
+
+    @FormUrlEncoded
+    @POST("editarPerfil")
+    Call<Respuesta> cargarSaldo(
+            @Field("email") String email,
+            @Field("saldo") int saldo
+    );
 }
