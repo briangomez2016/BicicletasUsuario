@@ -1,5 +1,6 @@
 package com.example.brian.bicicletasusuario;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.PorterDuff;
@@ -20,14 +21,22 @@ import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.brian.bicicletasusuario.ApiCliente.ApiCliente;
+import com.example.brian.bicicletasusuario.ApiInterface.ApiInterface;
+import com.example.brian.bicicletasusuario.ApiInterface.RespuestaUsuario;
 import com.example.brian.bicicletasusuario.utils.Util;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class Navigation extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -48,11 +57,39 @@ public class Navigation extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        final NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         //Abrir un fragment por defecto
         onNavigationItemSelected(navigationView.getMenu().findItem(R.id.pes_vermapa));
         ButterKnife.bind(this);
+
+		ApiInterface api = ApiCliente.getClient().create(ApiInterface.class);
+
+		SharedPreferences pref = this.getApplicationContext().getSharedPreferences("usuario", Context.MODE_PRIVATE);
+		String email=pref.getString("email", null);
+
+		Call<RespuestaUsuario> call = api.getPerfil(email);
+		call.enqueue(new Callback<RespuestaUsuario>() {
+			@Override
+			public void onResponse(Call<RespuestaUsuario> call, Response<RespuestaUsuario> response) {
+				if (response.body().getCodigo().equals("1")) {
+
+
+					View headerView = navigationView.getHeaderView(0);
+					TextView navUsername = (TextView) headerView.findViewById(R.id.tvNombreUsuario);
+					navUsername.setText(response.body().getUsuario().getNombre());
+					TextView navUsername2 = (TextView) headerView.findViewById(R.id.textView);
+					navUsername2.setText(response.body().getUsuario().getEmail());
+				}
+			}
+
+			@Override
+			public void onFailure(Call<RespuestaUsuario> call, Throwable t) {
+
+			}
+		});
+
+
     }
 
 
