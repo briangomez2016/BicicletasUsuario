@@ -153,7 +153,7 @@ public class VerMapa extends Fragment implements OnMapReadyCallback, GoogleMap.O
 					return;
 				} else {
 					final ApiInterface api = ApiCliente.getClient().create(ApiInterface.class);
-					Call<RespuestaLugares> call = api.obtenerLugares(2);
+					Call<RespuestaLugares> call = api.obtenerLugares(paradaSeleccionada.getId());
 					call.enqueue(new Callback<RespuestaLugares>() {
 						@Override
 						public void onResponse(Call<RespuestaLugares> call, Response<RespuestaLugares> response) {

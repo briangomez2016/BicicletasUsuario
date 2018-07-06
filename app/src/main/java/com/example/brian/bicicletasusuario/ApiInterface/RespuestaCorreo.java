@@ -8,8 +8,7 @@ public class RespuestaCorreo {
     private String codigo;
     @SerializedName ("mensaje")
     private String mensaje;
-
-    @SerializedName ("codigoGenerao")
+    @SerializedName ("pass")
     private String codigoGenerado;
 
     public String getCodigo() {

@@ -88,7 +88,7 @@ public class RegistroUsuario extends AppCompatActivity {
             passConfir.setError("Se debe confirmar la contraseña");
         }
         if(dir.isEmpty()){
-            direccion.setError("Se debe confirmar la contraseña");
+            direccion.setError("Se debe ingresar una dirección");
         }
         if(cedula.isEmpty() || pasaporte.isEmpty()){
             documento.setError("Se debe ingresar algo");
@@ -111,7 +111,7 @@ public class RegistroUsuario extends AppCompatActivity {
                             call2.enqueue(new Callback<RespuestaUsuario>() {
                                 @Override
                                 public void onResponse(Call<RespuestaUsuario> call2, Response<RespuestaUsuario> response) {
-                                    Intent intent = new Intent(RegistroUsuario.this, Navigation.class);
+                                    Intent intent = new Intent(RegistroUsuario.this, IniciarSesion.class);
                                     startActivity(intent);
 
                                 }

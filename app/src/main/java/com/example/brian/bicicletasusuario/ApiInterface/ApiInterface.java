@@ -64,7 +64,7 @@ public interface ApiInterface {
     );
 
     @FormUrlEncoded
-    @POST("correo")
+    @POST("olvidoContrasenia")
     Call<RespuestaCorreo> GenerarCodigo(
             @Field("email") String email
     );
