@@ -151,7 +151,7 @@ public class ModificarPass extends AppCompatActivity {
             });
 
         }else{
-            confirpass.setError("Las contraseñas no coinic  iden");
+            confirpass.setError("Las contraseñas no coinciden");
         }
 
 
