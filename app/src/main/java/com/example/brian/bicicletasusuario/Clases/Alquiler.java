@@ -3,16 +3,44 @@ package com.example.brian.bicicletasusuario.Clases;
 import java.util.Date;
 
 public class Alquiler {
+    private String costoActual;
+    private String tiempoActual;
+    private String costoAlquilado;
+    private String tiempoAlquilado;
+    private int bicicleta;
+    private String parada;
     private String horaInicio;
     private String horaFin;
-    private String parada;
-    private int bicicleta;
+    private String fin;
+    public String getFin() {
+        return fin;
+    }
 
-    public Alquiler(String horaInicio, String horaFin, String parada, int bicicleta) {
+    public void setFin(String fin) {
+        fin = fin;
+    }
+
+
+
+    public Alquiler(String costoActual, String tiempoActual, String costoAlquilado, String tiempoAlquilado, int bicicleta, String parada, String horaInicio, String horaFin,String Fin) {
+        this.costoActual = costoActual;
+        this.tiempoActual = tiempoActual;
+        this.costoAlquilado = costoAlquilado;
+        this.tiempoAlquilado = tiempoAlquilado;
+        this.bicicleta = bicicleta;
+        this.parada = parada;
         this.horaInicio = horaInicio;
         this.horaFin = horaFin;
+        this.fin = Fin;
+    }
+
+    public String getParada() {
+
+        return parada;
+    }
+
+    public void setParada(String parada) {
         this.parada = parada;
-        this.bicicleta = bicicleta;
     }
 
     public String getHoraInicio() {
@@ -27,16 +55,40 @@ public class Alquiler {
         return horaFin;
     }
 
-    public void setHoraFin(String HoraFin) {
-        this.horaFin = HoraFin;
+    public void setHoraFin(String horaFin) {
+        this.horaFin = horaFin;
     }
 
-    public String getParada() {
-        return parada;
+    public String getCostoActual() {
+        return costoActual;
     }
 
-    public void setParada(String parada) {
-        this.parada = parada;
+    public void setCostoActual(String costoActual) {
+        this.costoActual = costoActual;
+    }
+
+    public String getTiempoActual() {
+        return tiempoActual;
+    }
+
+    public void setTiempoActual(String tiempoActual) {
+        this.tiempoActual = tiempoActual;
+    }
+
+    public String getCostoAlquilado() {
+        return costoAlquilado;
+    }
+
+    public void setCostoAlquilado(String costoAlquilado) {
+        this.costoAlquilado = costoAlquilado;
+    }
+
+    public String getTiempoAlquilado() {
+        return tiempoAlquilado;
+    }
+
+    public void setTiempoAlquilado(String tiempoAlquilado) {
+        this.tiempoAlquilado = tiempoAlquilado;
     }
 
     public int getBicicleta() {
@@ -46,4 +98,6 @@ public class Alquiler {
     public void setBicicleta(int bicicleta) {
         this.bicicleta = bicicleta;
     }
+
+
 }

@@ -70,6 +70,13 @@ public interface ApiInterface {
     );
 
     @FormUrlEncoded
+    @POST("guardarImagen")
+    Call<RespuestaIncidencia> guardarImagen(
+            @Field("usuario") String email,
+            @Field("imagen") String img
+    );
+
+    @FormUrlEncoded
     @POST("cambiarPass")
     Call<RespuestaCambiarContra> cambiarPass(
             @Field("nueva") String nueva

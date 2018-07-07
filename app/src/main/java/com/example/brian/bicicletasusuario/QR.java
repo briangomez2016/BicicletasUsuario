@@ -21,9 +21,6 @@ import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
 public class QR extends AppCompatActivity implements ZXingScannerView.ResultHandler{
 
-	@BindView(R.id.listaHr)
-	Spinner lista;
-
 	private ZXingScannerView scannerView;
 
 	@Override

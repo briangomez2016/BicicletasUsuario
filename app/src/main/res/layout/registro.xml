@@ -216,4 +216,12 @@
             android:background="@drawable/fondo_primary_round"
             android:visibility="gone" />
     </LinearLayout>
+    <ImageView
+        android:id="@+id/imgUno"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+    <ImageView
+        android:id="@+id/imgDos"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 </LinearLayout>

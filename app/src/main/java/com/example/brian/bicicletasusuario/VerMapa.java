@@ -221,9 +221,11 @@ public class VerMapa extends Fragment implements OnMapReadyCallback, GoogleMap.O
 
 		btnQRDevolver.setOnClickListener(new View.OnClickListener() {
 			@Override
-			public void onClick(View v) {
-				escanearQR (0);
+			public void onClick(View view) {
+				Intent intent = new Intent(getActivity(), QR.class);
+				startActivityForResult(intent, 20);
 			}
+
 		});
 
 		btnConfirmarDevolver.setOnClickListener(new View.OnClickListener() {
@@ -286,22 +288,17 @@ public class VerMapa extends Fragment implements OnMapReadyCallback, GoogleMap.O
 			startActivity(marketIntent);
 		}
 	}
-
-
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
-		if (requestCode == 0) {
+		if (requestCode != 20) {
+			super.onActivityResult(requestCode, resultCode, data);
 
-			if (resultCode == AppCompatActivity.RESULT_OK) {
-				String contents = data.getStringExtra ("SCAN_RESULT");
-				etQRDevolver.setText (contents);
-			}
-			if(resultCode == AppCompatActivity.RESULT_CANCELED){
-				Toast.makeText(this.getActivity (), "No se pudo escanear el codigo", Toast.LENGTH_SHORT).show();
-			}
+		} else {
+
+			etQRDevolver.setText (data.getData().toString());
 		}
 	}
+
 
 	@Override
 	public void onMapReady(final GoogleMap googleMap) {

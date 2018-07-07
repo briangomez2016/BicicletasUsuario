@@ -24,6 +24,7 @@ import com.example.brian.bicicletasusuario.ApiCliente.ApiCliente;
 import com.example.brian.bicicletasusuario.ApiInterface.ApiInterface;
 import com.example.brian.bicicletasusuario.ApiInterface.RespuestaAlquilerActual;
 import com.example.brian.bicicletasusuario.ApiInterface.RespuestaIncidencia;
+import com.example.brian.bicicletasusuario.Clases.Usuario;
 import com.google.android.gms.common.api.Api;
 
 import butterknife.ButterKnife;
@@ -52,7 +53,7 @@ public class AlquilarBici extends Fragment {
     @BindView(R.id.cargando)
     LinearLayout cargando;
     @BindView(R.id.tiempoActual)
-    Chronometer tiempoActual;
+    TextView tiempoActual;
     @BindView(R.id.tiempoAlquilado)
     TextView tiempoAlquilado;
     @BindView(R.id.costoActual)
@@ -140,19 +141,28 @@ public class AlquilarBici extends Fragment {
         final ApiInterface api = ApiCliente.getClient().create(ApiInterface.class);
         SharedPreferences sp = getActivity().getSharedPreferences("usuario", Context.MODE_PRIVATE);
         SharedPreferences.Editor et = sp.edit();
-        String correo = sp.getString("email", null);
+        final String correo = sp.getString("email", null);
         Call<RespuestaAlquilerActual> call = api.alquilerActual(correo);
         call.enqueue(new Callback<RespuestaAlquilerActual>() {
             @Override
             public void onResponse(Call<RespuestaAlquilerActual> call, Response<RespuestaAlquilerActual> response) {
                 if (response.body().getCodigo().equals("1")) {
                     if (response.body().getAlquiler() != null) {
-                        tiempoAlquilado.setText("15 minutos");
-                        costoActual.setText("$100");
-                        costoAlquilado.setText("$200");
-                        titulo.setText("Alquiler Actual");
-                        pantallaActual.setVisibility(View.VISIBLE);
-                    } else {
+                        Log.d("fin", "onResponse: "+response.body().getAlquiler().getFin());
+                        if(response.body().getAlquiler().getFin() == null) {
+                            tiempoAlquilado.setText(response.body().getAlquiler().getTiempoAlquilado());
+                            costoActual.setText(response.body().getAlquiler().getCostoActual());
+                            costoAlquilado.setText(response.body().getAlquiler().getCostoAlquilado());
+                            tiempoActual.setText(response.body().getAlquiler().getTiempoActual());
+                            titulo.setText("Alquiler Actual");
+                            pantallaActual.setVisibility(View.VISIBLE);
+
+                        }else{
+                            pantallaActual.setVisibility(View.GONE);
+                            pantallaAlquilar.setVisibility(View.VISIBLE);
+                        }
+                    }else{
+                        pantallaActual.setVisibility(View.GONE);
                         pantallaAlquilar.setVisibility(View.VISIBLE);
                     }
                 } else {
@@ -168,6 +178,9 @@ public class AlquilarBici extends Fragment {
         });
 
     }
+    public void cargarAtributos(String correo){
+
+    }
 
     public void alquilar(String identificador, String tiempo, String correo) {
         final ApiInterface api = ApiCliente.getClient().create(ApiInterface.class);
@@ -178,7 +191,6 @@ public class AlquilarBici extends Fragment {
                 if (response.body().getCodigo().equals("0")) {
                     cargando.setVisibility(View.GONE);
                     pantallaAlquilar.setVisibility(View.GONE);
-                    tiempoActual.start();
                     yalquilo();
                 }
                 if (response.body().getCodigo().equals("1")) {

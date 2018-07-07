@@ -2,6 +2,7 @@ package com.example.brian.bicicletasusuario;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -13,6 +14,7 @@ import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.text.TextWatcher;
+import android.util.Base64;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -27,11 +29,14 @@ import android.widget.Toast;
 
 import com.example.brian.bicicletasusuario.ApiCliente.ApiCliente;
 import com.example.brian.bicicletasusuario.ApiInterface.ApiInterface;
+import com.example.brian.bicicletasusuario.ApiInterface.RespuestaIncidencia;
 import com.example.brian.bicicletasusuario.ApiInterface.RespuestaUsuario;
 import com.google.firebase.iid.FirebaseInstanceId;
 
+import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -74,11 +79,18 @@ public class RegistroUsuario extends AppCompatActivity {
     ImageView frenteSeleccionado;
     @BindView(R.id.dorsoSeleccionado)
     ImageView dorsoSeleccionado;
+    @BindView(R.id.imgUno)
+    ImageView imgUno;
+    @BindView(R.id.imgDos)
+    ImageView imgDos;
+
     Bitmap imgFrente = null;
     Bitmap imgDorso = null;
 
     boolean frente = false;
     boolean dorso = false;
+    String frenteB64 = null;
+    String dorsoB64 = null;
 
     public void Registrarse(View v) {
 
@@ -113,8 +125,10 @@ public class RegistroUsuario extends AppCompatActivity {
         if(cedula.isEmpty() || pasaporte.isEmpty()){
             documento.setError("Se debe ingresar algo");
         }
-
-        if (password.equals(passconf) && !nom.isEmpty() && !em.isEmpty() && !dir.isEmpty() && !telefono.isEmpty() && !password.isEmpty() && !cedula.isEmpty()) {
+        if(frenteB64 == null || dorsoB64 == null){
+            Toast.makeText(RegistroUsuario.this, "Falta imagen", Toast.LENGTH_LONG).show();
+        }
+        if (frenteB64 != null && dorsoB64 != null && password.equals(passconf) && !nom.isEmpty() && !em.isEmpty() && !dir.isEmpty() && !telefono.isEmpty() && !password.isEmpty() && !cedula.isEmpty()) {
             btnRegistrarse.setVisibility(View.GONE);
             pbRegistrarse.setVisibility(View.VISIBLE);
             Call<RespuestaUsuario> call = api.getPerfil(em);
@@ -131,11 +145,11 @@ public class RegistroUsuario extends AppCompatActivity {
                             call2.enqueue(new Callback<RespuestaUsuario>() {
                                 @Override
                                 public void onResponse(Call<RespuestaUsuario> call2, Response<RespuestaUsuario> response) {
+                                    guardarImg(em,frenteB64);
+                                    guardarImg(em,dorsoB64);
                                     Intent intent = new Intent(RegistroUsuario.this, Navigation.class);
                                     startActivity(intent);
-
                                 }
-
                                 @Override
                                 public void onFailure(Call<RespuestaUsuario> call2, Throwable t) {
                                     btnRegistrarse.setVisibility(View.VISIBLE);
@@ -148,6 +162,8 @@ public class RegistroUsuario extends AppCompatActivity {
                             call2.enqueue(new Callback<RespuestaUsuario>() {
                                 @Override
                                 public void onResponse(Call<RespuestaUsuario> call2, Response<RespuestaUsuario> response) {
+                                    guardarImg(em,frenteB64);
+                                    guardarImg(em,dorsoB64);
                                     Intent intent = new Intent(RegistroUsuario.this, Navigation.class);
                                     startActivity(intent);
                                 }
@@ -247,16 +263,24 @@ public class RegistroUsuario extends AppCompatActivity {
 
         //Detects request codes
         if (requestCode == GET_FROM_GALLERY && resultCode == this.RESULT_OK) {
-            Uri selectedImage = data.getData();
+            final Uri imageUri = data.getData();
             Bitmap bitmap = null;
             try {
-                bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
+                bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
                 if (frente && bitmap != null) {
                     imgFrente = bitmap;
+                    final InputStream imageStream = getContentResolver().openInputStream(imageUri);
+                    final Bitmap selectedImage  = BitmapFactory.decodeStream(imageStream);
+                    frenteB64 = encodeToBase64(selectedImage, Bitmap.CompressFormat.JPEG, 100);
                     frenteSeleccionado.setVisibility(View.VISIBLE);
+
+
                 }
                 if (dorso && bitmap != null) {
                     imgDorso = bitmap;
+                    final InputStream imageStream = getContentResolver().openInputStream(imageUri);
+                    final Bitmap selectedImage  = BitmapFactory.decodeStream(imageStream);
+                    dorsoB64 = encodeToBase64(selectedImage, Bitmap.CompressFormat.JPEG, 100);
                     dorsoSeleccionado.setVisibility(View.VISIBLE);
                 }
             } catch (FileNotFoundException e) {
@@ -269,6 +293,37 @@ public class RegistroUsuario extends AppCompatActivity {
         }
         dorso = false;
         frente = false;
+    }
+    private static String encodeToBase64(Bitmap image, Bitmap.CompressFormat compressFormat, int quality)
+    {
+        ByteArrayOutputStream byteArrayOS = new ByteArrayOutputStream();
+        image.compress(compressFormat, quality, byteArrayOS);
+        return Base64.encodeToString(byteArrayOS.toByteArray(), Base64.DEFAULT);
+    }
+
+    private static Bitmap decodeBase64(String input)
+    {
+        byte[] decodedBytes = Base64.decode(input, 0);
+        return BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
+    }
+    private void guardarImg(String email , String img){
+        final ApiInterface api = ApiCliente.getClient().create(ApiInterface.class);
+        Call<RespuestaIncidencia> call = api.guardarImagen(email,img);
+
+        call.enqueue(new Callback<RespuestaIncidencia>() {
+            @Override
+            public void onResponse(Call<RespuestaIncidencia> call, Response<RespuestaIncidencia> response) {
+                if(response.body().getCodigo().equals("1")){
+                    Log.d("bien", "onResponse: bieeeeen");
+                }else{Log.d("no", "onResponse: noooooo");}
+            }
+
+            @Override
+            public void onFailure(Call<RespuestaIncidencia> call, Throwable t) {
+                Log.d("Error Servidor", "onResponse:"+t.getMessage());
+            }
+        });
+
     }
 }
 
