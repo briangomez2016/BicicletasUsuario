@@ -1,7 +1,10 @@
 package com.example.brian.bicicletasusuario;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -15,6 +18,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -25,6 +29,9 @@ import com.example.brian.bicicletasusuario.ApiCliente.ApiCliente;
 import com.example.brian.bicicletasusuario.ApiInterface.ApiInterface;
 import com.example.brian.bicicletasusuario.ApiInterface.RespuestaUsuario;
 import com.google.firebase.iid.FirebaseInstanceId;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -59,6 +66,19 @@ public class RegistroUsuario extends AppCompatActivity {
     Button btnRegistrarse;
     @BindView(R.id.pbRegistrarse)
     ProgressBar pbRegistrarse;
+    @BindView(R.id.btnFrente)
+    Button btnFrente;
+    @BindView(R.id.btnDorso)
+    Button btnDorso;
+    @BindView(R.id.frenteSeleccionado)
+    ImageView frenteSeleccionado;
+    @BindView(R.id.dorsoSeleccionado)
+    ImageView dorsoSeleccionado;
+    Bitmap imgFrente = null;
+    Bitmap imgDorso = null;
+
+    boolean frente = false;
+    boolean dorso = false;
 
     public void Registrarse(View v) {
 
@@ -88,7 +108,7 @@ public class RegistroUsuario extends AppCompatActivity {
             passConfir.setError("Se debe confirmar la contraseña");
         }
         if(dir.isEmpty()){
-            direccion.setError("Se debe ingresar una dirección");
+            direccion.setError("Se debe confirmar la contraseña");
         }
         if(cedula.isEmpty() || pasaporte.isEmpty()){
             documento.setError("Se debe ingresar algo");
@@ -111,7 +131,7 @@ public class RegistroUsuario extends AppCompatActivity {
                             call2.enqueue(new Callback<RespuestaUsuario>() {
                                 @Override
                                 public void onResponse(Call<RespuestaUsuario> call2, Response<RespuestaUsuario> response) {
-                                    Intent intent = new Intent(RegistroUsuario.this, IniciarSesion.class);
+                                    Intent intent = new Intent(RegistroUsuario.this, Navigation.class);
                                     startActivity(intent);
 
                                 }
@@ -193,11 +213,62 @@ public class RegistroUsuario extends AppCompatActivity {
                     }
                 }
             }
+
             @Override
             public void afterTextChanged(Editable s) {
 
             }
         });
+
+        btnFrente.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                frente = true;
+                startActivityForResult(new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI), GET_FROM_GALLERY);
+            }
+        });
+
+        btnDorso.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dorso = true;
+                startActivityForResult(new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI), GET_FROM_GALLERY);
+            }
+        });
+
+
+    }
+
+    public static final int GET_FROM_GALLERY = 0;
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        //Detects request codes
+        if (requestCode == GET_FROM_GALLERY && resultCode == this.RESULT_OK) {
+            Uri selectedImage = data.getData();
+            Bitmap bitmap = null;
+            try {
+                bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
+                if (frente && bitmap != null) {
+                    imgFrente = bitmap;
+                    frenteSeleccionado.setVisibility(View.VISIBLE);
+                }
+                if (dorso && bitmap != null) {
+                    imgDorso = bitmap;
+                    dorsoSeleccionado.setVisibility(View.VISIBLE);
+                }
+            } catch (FileNotFoundException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+        dorso = false;
+        frente = false;
     }
 }
 
