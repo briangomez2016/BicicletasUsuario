@@ -148,7 +148,6 @@ public class AlquilarBici extends Fragment {
             public void onResponse(Call<RespuestaAlquilerActual> call, Response<RespuestaAlquilerActual> response) {
                 if (response.body().getCodigo().equals("1")) {
                     if (response.body().getAlquiler() != null) {
-                        Log.d("fin", "onResponse: "+response.body().getAlquiler().getFin());
                         if(response.body().getAlquiler().getFin() == null) {
                             tiempoAlquilado.setText(response.body().getAlquiler().getTiempoAlquilado());
                             costoActual.setText(response.body().getAlquiler().getCostoActual());
