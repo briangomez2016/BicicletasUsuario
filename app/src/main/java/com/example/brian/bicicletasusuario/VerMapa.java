@@ -141,7 +141,12 @@ public class VerMapa extends Fragment implements OnMapReadyCallback, GoogleMap.O
 			@Override
 			public void onClick(View v) {
 				llOpciones.setVisibility(View.GONE);
-				Toast.makeText(VerMapa.this.getActivity(), "ABRIR PANEL ALQUILAR AQUI", Toast.LENGTH_SHORT).show();
+
+				Fragment fragment = new AlquilarBici ();
+				FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+				fragmentTransaction.replace(R.id.contenido_navigation, fragment);
+				fragmentTransaction.addToBackStack(null);
+				fragmentTransaction.commit();
 			}
 		});
 
@@ -294,7 +299,7 @@ public class VerMapa extends Fragment implements OnMapReadyCallback, GoogleMap.O
 			super.onActivityResult(requestCode, resultCode, data);
 
 		} else {
-
+if (data != null && data.getData() != null && data.getData().toString() != null)
 			etQRDevolver.setText (data.getData().toString());
 		}
 	}

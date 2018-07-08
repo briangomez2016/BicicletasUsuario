@@ -313,9 +313,6 @@ public class RegistroUsuario extends AppCompatActivity {
         call.enqueue(new Callback<RespuestaIncidencia>() {
             @Override
             public void onResponse(Call<RespuestaIncidencia> call, Response<RespuestaIncidencia> response) {
-                if(response.body().getCodigo().equals("1")){
-                    Log.d("bien", "onResponse: bieeeeen");
-                }else{Log.d("no", "onResponse: noooooo");}
             }
 
             @Override

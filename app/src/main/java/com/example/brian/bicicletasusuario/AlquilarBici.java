@@ -80,8 +80,11 @@ public class AlquilarBici extends Fragment {
             super.onActivityResult(requestCode, resultCode, data);
 
         } else {
-            id = data.getData().toString();
-            editText.setText(id);
+            if (data != null && data.getData() != null && data.getData().toString() != null) {
+
+                id = data.getData().toString();
+                editText.setText(id);
+            }
         }
     }
 
