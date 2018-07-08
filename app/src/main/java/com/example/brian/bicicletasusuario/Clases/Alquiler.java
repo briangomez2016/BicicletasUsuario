@@ -7,7 +7,7 @@ public class Alquiler {
     private String tiempoActual;
     private String costoAlquilado;
     private String tiempoAlquilado;
-    private int bicicleta;
+    private String bicicleta;
     private String parada;
     private String horaInicio;
     private String horaFin;
@@ -22,7 +22,7 @@ public class Alquiler {
 
 
 
-    public Alquiler(String costoActual, String tiempoActual, String costoAlquilado, String tiempoAlquilado, int bicicleta, String parada, String horaInicio, String horaFin,String Fin) {
+    public Alquiler(String costoActual, String tiempoActual, String costoAlquilado, String tiempoAlquilado, String bicicleta, String parada, String horaInicio, String horaFin,String Fin) {
         this.costoActual = costoActual;
         this.tiempoActual = tiempoActual;
         this.costoAlquilado = costoAlquilado;
@@ -91,11 +91,11 @@ public class Alquiler {
         this.tiempoAlquilado = tiempoAlquilado;
     }
 
-    public int getBicicleta() {
+    public String getBicicleta() {
         return bicicleta;
     }
 
-    public void setBicicleta(int bicicleta) {
+    public void setBicicleta(String bicicleta) {
         this.bicicleta = bicicleta;
     }
 

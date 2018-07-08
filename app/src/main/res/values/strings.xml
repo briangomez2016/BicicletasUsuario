@@ -29,6 +29,7 @@
     <string name="olvidopass"><u>Olvide La Contraseña</u></string>
     <string name="cambiarpass"><u>Cambiar Contraseña</u></string>
     <string name="recuperarpass"><u>Recuperar Cuenta</u></string>
+    <string name="vermapa"><u>ver mapa</u></string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

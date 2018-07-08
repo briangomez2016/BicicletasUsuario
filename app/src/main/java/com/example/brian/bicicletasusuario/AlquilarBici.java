@@ -62,6 +62,9 @@ public class AlquilarBici extends Fragment {
     TextView costoAlquilado;
     @BindView(R.id.titulo)
     TextView titulo;
+    @BindView(R.id.identificador)
+    TextView identificador;
+
 
 
 
@@ -150,9 +153,15 @@ public class AlquilarBici extends Fragment {
                     if (response.body().getAlquiler() != null) {
                         if(response.body().getAlquiler().getFin() == null) {
                             tiempoAlquilado.setText(response.body().getAlquiler().getTiempoAlquilado());
-                            costoActual.setText(response.body().getAlquiler().getCostoActual());
-                            costoAlquilado.setText(response.body().getAlquiler().getCostoAlquilado());
+                            if(response.body().getAlquiler().getCostoAlquilado().equals("0")){
+                                costoActual.setText("Gratis");
+                                costoAlquilado.setText("Gratis");
+                            }else{
+                                costoActual.setText(response.body().getAlquiler().getCostoActual());
+                                costoAlquilado.setText(response.body().getAlquiler().getCostoAlquilado());
+                            }
                             tiempoActual.setText(response.body().getAlquiler().getTiempoActual());
+                            identificador.setText(response.body().getAlquiler().getBicicleta());
                             titulo.setText("Alquiler Actual");
                             pantallaActual.setVisibility(View.VISIBLE);
 

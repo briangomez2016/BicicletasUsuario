@@ -44,6 +44,7 @@
             android:visibility="gone"
             android:layout_marginTop="25dp"
             >
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -171,6 +172,34 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Identificador: "
+                    android:textSize="20dp"
+                    android:layout_marginLeft="10dp"
+                    android:textColor="#28972d"
+                    android:layout_gravity="center"
+                    android:textStyle="bold"
+                    />
+                <TextView
+                    android:id="@+id/identificador"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#000"
+                    android:textSize="20dp"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="20dp"
+                    />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/contenedor"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                >
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -287,7 +316,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Tiempo Alquilado: "
+                    android:text="Paradas cercanas "
                     android:textSize="20dp"
                     android:layout_marginLeft="10dp"
                     android:textColor="#28972d"
@@ -296,9 +325,10 @@
                     />
                 <TextView
                     android:id="@+id/verMapa"
+                    android:text="@string/vermapa"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="#000"
+                    android:textColor="#0067b6"
                     android:textSize="20dp"
                     android:layout_gravity="center"
                     android:layout_marginLeft="20dp"
