@@ -147,7 +147,7 @@ public class RegistroUsuario extends AppCompatActivity {
                                 public void onResponse(Call<RespuestaUsuario> call2, Response<RespuestaUsuario> response) {
                                     guardarImg(em,frenteB64);
                                     guardarImg(em,dorsoB64);
-                                    Intent intent = new Intent(RegistroUsuario.this, Navigation.class);
+                                    Intent intent = new Intent(RegistroUsuario.this, IniciarSesion.class);
                                     startActivity(intent);
                                 }
                                 @Override
